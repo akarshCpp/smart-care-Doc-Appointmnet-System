@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Care — Doctor Appointment System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Nunito+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Palette — clean slate, no gradients */
+  --bg:        #f5f6f8;
+  --surface:   #ffffff;
+  --surface2:  #f0f2f5;
+  --border:    #e2e5ea;
+  --border2:   #cdd2da;
+
+  --ink:       #0f1923;
+  --ink2:      #3a4554;
+  --muted:     #7a8799;
+  --placeholder: #aab2bd;
+
+  --accent:    #1a56db;      /* primary blue — solid, no gradient */
+  --accent-lt: #eef2fd;
+  --accent-dk: #1341b0;
+
+  --green:     #0e9f6e;
+  --green-lt:  #e8f8f2;
+  --amber:     #c27803;
+  --amber-lt:  #fdf3dc;
+  --red:       #c81e1e;
+  --red-lt:    #fde8e8;
+  --slate:     #64748b;
+  --slate-lt:  #f1f5f9;
+
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-body:    'Nunito Sans', sans-serif;
+
+  --r:    10px;
+  --r-sm:  6px;
+  --r-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow:    0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.04);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--ff-body);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Nav ─────────────────────────────────────────────────── */
+nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 62px;
+}
+.logo {
+  font-family: var(--ff-display);
+  font-size: 20px; font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.3px;
+  display: flex; align-items: center; gap: 9px;
+}
+.logo-mark {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--accent); display: flex;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 18px; height: 18px; fill: none; stroke: white; stroke-width: 2; }
+
+.nav-tabs {
+  display: flex; gap: 2px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+}
+.nav-tab {
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none;
+  color: var(--muted); background: transparent;
+  font-family: var(--ff-body);
+  transition: all 0.18s;
+  letter-spacing: 0.1px;
+}
+.nav-tab:hover { color: var(--ink2); background: var(--surface); }
+.nav-tab.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); }
+
+.nav-user {
+  display: flex; align-items: center; gap: 10px;
+}
+.user-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 40px; padding: 5px 14px 5px 5px;
+  font-size: 13px; font-weight: 600; color: var(--ink2);
+}
+.user-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--accent); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+
+/* ── Layout shell ────────────────────────────────────────── */
+.shell { max-width: 1280px; margin: 0 auto; }
+
+.screen { display: none; padding: 36px 32px; animation: fadeIn 0.3s ease both; }
+.screen.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Page heading ────────────────────────────────────────── */
+.ph { margin-bottom: 28px; }
+.ph h1 {
+  font-family: var(--ff-display);
+  font-size: 28px; font-weight: 700;
+  color: var(--ink); line-height: 1.2;
+  letter-spacing: -0.4px;
+}
+.ph h1 em { font-style: normal; color: var(--accent); }
+.ph p { color: var(--muted); margin-top: 5px; font-size: 14px; }
+
+/* ── Stat grid ───────────────────────────────────────────── */
+.stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 22px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative; overflow: hidden;
+}
+.stat-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.stat-card-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: 0;
+}
+.stat-card-bar.blue  { background: var(--accent); }
+.stat-card-bar.green { background: var(--green); }
+.stat-card-bar.amber { background: var(--amber); }
+.stat-card-bar.red   { background: var(--red); }
+
+.stat-icon-wrap {
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.stat-icon-wrap.blue  { background: var(--accent-lt); }
+.stat-icon-wrap.green { background: var(--green-lt); }
+.stat-icon-wrap.amber { background: var(--amber-lt); }
+.stat-icon-wrap.red   { background: var(--red-lt); }
+.stat-icon-wrap svg { width: 18px; height: 18px; }
+
+.stat-num {
+  font-family: var(--ff-display);
+  font-size: 32px; font-weight: 700;
+  color: var(--ink); line-height: 1; letter-spacing: -1px;
+}
+.stat-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+.stat-sub {
+  font-size: 11px; font-weight: 600; margin-top: 10px;
+  display: inline-block; padding: 2px 8px; border-radius: 20px;
+}
+.stat-sub.up   { background: var(--green-lt); color: var(--green); }
+.stat-sub.warn { background: var(--amber-lt); color: var(--amber); }
+.stat-sub.muted { background: var(--slate-lt); color: var(--slate); }
+
+/* ── Card ────────────────────────────────────────────────── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+.card-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.card-hd h3 {
+  font-family: var(--ff-display);
+  font-size: 16px; font-weight: 700; color: var(--ink);
+  letter-spacing: -0.2px;
+}
+
+/* ── Two / Three col ─────────────────────────────────────── */
+.two-col   { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+.three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+
+/* ── Badge ───────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 2px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.badge-blue   { background: var(--accent-lt);  color: var(--accent); }
+.badge-green  { background: var(--green-lt);   color: var(--green); }
+.badge-amber  { background: var(--amber-lt);   color: var(--amber); }
+.badge-red    { background: var(--red-lt);      color: var(--red); }
+.badge-slate  { background: var(--slate-lt);   color: var(--slate); }
+
+/* ── Button ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; border: none;
+  font-family: var(--ff-body);
+  transition: all 0.18s; letter-spacing: 0.1px;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--accent); color: white;
+  box-shadow: 0 1px 3px rgba(26,86,219,0.3);
+}
+.btn-primary:hover { background: var(--accent-dk); }
+.btn-outline {
+  background: transparent; color: var(--accent);
+  border: 1.5px solid var(--accent);
+}
+.btn-outline:hover { background: var(--accent-lt); }
+.btn-ghost {
+  background: var(--surface2); color: var(--ink2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--border2); color: var(--ink); }
+.btn-red   { background: var(--red-lt);   color: var(--red);   border: 1px solid #f9b2b2; }
+.btn-green { background: var(--green-lt); color: var(--green); border: 1px solid #a7f3d0; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-block { width: 100%; justify-content: center; }
+.btn-lg { padding: 12px 24px; font-size: 14px; }
+
+/* ── Table ───────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 10px 14px; text-align: left;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--muted);
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+tbody td {
+  padding: 13px 14px; font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink2);
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--bg); }
+
+/* ── Form elements ───────────────────────────────────────── */
+.form-grp { margin-bottom: 20px; }
+.form-lbl {
+  display: block; font-size: 12px; font-weight: 700;
+  color: var(--ink2); margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.form-ctrl {
+  width: 100%; padding: 10px 13px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); color: var(--ink);
+  font-size: 13px; font-family: var(--ff-body);
+  outline: none; transition: border-color 0.18s;
+}
+.form-ctrl:focus { border-color: var(--accent); }
+.form-ctrl::placeholder { color: var(--placeholder); }
+textarea.form-ctrl { resize: vertical; min-height: 90px; }
+select.form-ctrl { cursor: pointer; }
+
+/* ── Search bar ──────────────────────────────────────────── */
+.search-wrap { display: flex; gap: 10px; margin-bottom: 24px; align-items: center; }
+.search-box { flex: 1; position: relative; }
+.search-box input {
+  width: 100%; padding: 10px 13px 10px 38px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); font-size: 13px;
+  font-family: var(--ff-body); color: var(--ink);
+  outline: none; transition: border-color 0.18s;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box input::placeholder { color: var(--placeholder); }
+.search-ico {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%); pointer-events: none;
+  color: var(--muted);
+}
+
+/* ── Apt row ─────────────────────────────────────────────── */
+.apt-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.apt-row:last-child { border-bottom: none; }
+.apt-av {
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 14px;
+  font-weight: 700; color: white; flex-shrink: 0;
+}
+.apt-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.apt-sub  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.apt-time-val { font-size: 13px; font-weight: 700; color: var(--accent); text-align: right; }
+.apt-date     { font-size: 11px; color: var(--muted); text-align: right; margin-top: 2px; }
+
+/* ── Doctor card grid ────────────────────────────────────── */
+.doctor-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+.doc-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); box-shadow: var(--shadow-sm);
+  overflow: hidden; cursor: pointer;
+  transition: box-shadow 0.22s, transform 0.22s;
+}
+.doc-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+
+.doc-top {
+  background: var(--surface2); border-bottom: 1px solid var(--border);
+  padding: 28px 20px 22px; text-align: center;
+}
+.doc-av {
+  width: 68px; height: 68px; border-radius: 50%;
+  margin: 0 auto 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 22px;
+  font-weight: 700; color: white;
+  border: 3px solid var(--border);
+}
+.doc-name { font-family: var(--ff-display); font-size: 15px; font-weight: 700; color: var(--ink); }
+.doc-spec { font-size: 12px; font-weight: 600; color: var(--accent); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+.doc-body { padding: 18px 20px 20px; }
+.doc-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.doc-meta-item { text-align: center; padding: 10px; background: var(--bg); border-radius: var(--r-sm); }
+.doc-meta-val { font-family: var(--ff-display); font-size: 15px; font-weight: 700; color: var(--ink); }
+.doc-meta-key { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+/* ── Booking layout ──────────────────────────────────────── */
+.book-layout { display: grid; grid-template-columns: 1fr 360px; gap: 22px; align-items: start; }
+
+.slots-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; }
+.slot-btn {
+  padding: 9px 4px; text-align: center;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm); background: var(--surface);
+  font-size: 12px; font-weight: 700; color: var(--ink2);
+  cursor: pointer; transition: all 0.15s; font-family: var(--ff-body);
+}
+.slot-btn:hover:not(.taken) { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+.slot-btn.selected { background: var(--accent); border-color: var(--accent); color: white; }
+.slot-btn.taken { background: var(--bg); color: var(--border2); border-color: var(--border); cursor: not-allowed; text-decoration: line-through; }
+
+.book-summary {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); box-shadow: var(--shadow);
+  padding: 24px; position: sticky; top: 82px;
+}
+.sum-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.sum-row:last-of-type { border-bottom: none; }
+.sum-key { color: var(--muted); }
+.sum-val { font-weight: 700; color: var(--ink2); }
+.sum-total {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--ink);
+}
+.sum-total-key { font-family: var(--ff-display); font-size: 15px; font-weight: 700; }
+.sum-total-val { font-family: var(--ff-display); font-size: 26px; font-weight: 700; color: var(--accent); }
+
+/* ── Doctor profile strip ────────────────────────────────── */
+.doc-strip {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px 24px;
+  display: flex; align-items: center; gap: 18px;
+  box-shadow: var(--shadow-sm); margin-bottom: 22px;
+}
+.strip-av {
+  width: 56px; height: 56px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 18px;
+  font-weight: 700; color: white; flex-shrink: 0;
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center; padding: 64px 0;
+}
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-lt); border: 1px solid #bfcdfa;
+  color: var(--accent); font-size: 12px; font-weight: 700;
+  padding: 5px 13px; border-radius: 20px; margin-bottom: 20px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.hero h1 {
+  font-family: var(--ff-display);
+  font-size: 52px; font-weight: 800; line-height: 1.1;
+  color: var(--ink); margin-bottom: 16px; letter-spacing: -1px;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero p { color: var(--muted); font-size: 16px; line-height: 1.7; margin-bottom: 32px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-visual { position: relative; }
+.vis-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 18px 20px;
+  box-shadow: var(--shadow); margin-bottom: 12px;
+  animation: floatY 4s ease-in-out infinite;
+}
+.vis-card:nth-child(2) { margin-left: 36px; animation-delay: -2s; }
+.vis-card:nth-child(3) { margin-left: 18px; }
+@keyframes floatY {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.vc-row { display: flex; align-items: center; gap: 12px; }
+.vc-av {
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
+}
+
+/* ── Features ────────────────────────────────────────────── */
+.features { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 52px 0; }
+.feat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 28px;
+  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s, transform 0.2s;
+}
+.feat:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+.feat-icon {
+  width: 44px; height: 44px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.feat h3 { font-family: var(--ff-display); font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.feat p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+/* ── Availability toggle ─────────────────────────────────── */
+.avail-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 0; border-bottom: 1px solid var(--border);
+}
+.avail-row:last-child { border-bottom: none; }
+.avail-label { font-size: 13px; font-weight: 600; color: var(--ink2); }
+.avail-time  { font-size: 12px; color: var(--muted); }
+.toggle-sw {
+  width: 38px; height: 20px; border-radius: 10px;
+  position: relative; cursor: pointer; border: none;
+  transition: background 0.2s;
+}
+.toggle-sw.on  { background: var(--accent); }
+.toggle-sw.off { background: var(--border2); }
+.toggle-sw::after {
+  content: ''; position: absolute;
+  top: 3px; width: 14px; height: 14px;
+  border-radius: 50%; background: white;
+  transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-sw.on::after  { left: 21px; }
+.toggle-sw.off::after { left: 3px; }
+
+/* ── Progress bar ────────────────────────────────────────── */
+.prog-bar { height: 5px; background: var(--surface2); border-radius: 5px; overflow: hidden; margin-top: 5px; }
+.prog-fill { height: 100%; border-radius: 5px; }
+
+/* ── Mini bar chart ──────────────────────────────────────── */
+.mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 56px; margin-top: 10px; }
+.bar {
+  flex: 1; border-radius: 3px 3px 0 0;
+  background: var(--accent);
+  opacity: 0.6; transition: opacity 0.15s;
+  animation: growUp 0.5s ease both;
+}
+.bar:hover { opacity: 1; }
+@keyframes growUp {
+  from { transform: scaleY(0); transform-origin: bottom; }
+  to   { transform: scaleY(1); transform-origin: bottom; }
+}
+.chart-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--muted); font-weight: 600; }
+
+/* ── Profile header ──────────────────────────────────────── */
+.prof-hdr {
+  display: flex; align-items: center; gap: 22px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 24px;
+  box-shadow: var(--shadow-sm); margin-bottom: 24px;
+}
+.prof-av {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-size: 26px; font-weight: 700; color: white;
+  flex-shrink: 0; position: relative;
+  border: 4px solid var(--accent-lt);
+}
+.verified-badge {
+  position: absolute; bottom: 2px; right: 2px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--green); border: 2px solid white;
+  display: flex; align-items: center; justify-content: center;
+}
+.verified-badge svg { width: 10px; height: 10px; stroke: white; stroke-width: 3; fill: none; }
+.prof-info h2 { font-family: var(--ff-display); font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+.prof-info p { color: var(--accent); font-size: 13px; font-weight: 600; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.4px; }
+.prof-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.prof-fee { margin-left: auto; text-align: right; }
+.prof-fee-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+.prof-fee-val { font-family: var(--ff-display); font-size: 28px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+
+/* ── Divider ─────────────────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+/* ── Toast ───────────────────────────────────────────────── */
+#toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 999;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 20px;
+  box-shadow: var(--shadow-lg);
+  display: flex; align-items: center; gap: 12px;
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 340px;
+  border-left: 4px solid var(--green);
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon {
+  width: 34px; height: 34px; border-radius: var(--r-sm);
+  background: var(--green-lt); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.toast-icon svg { width: 16px; height: 16px; stroke: var(--green); stroke-width: 2.5; fill: none; }
+#toast-title { font-weight: 700; font-size: 13px; color: var(--ink); }
+#toast-msg   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ── Numbers / stats strip ───────────────────────────────── */
+.hero-stats { display: flex; gap: 36px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); }
+.hstat-num { font-family: var(--ff-display); font-size: 24px; font-weight: 800; color: var(--accent); }
+.hstat-lbl { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .stat-grid  { grid-template-columns: repeat(2,1fr); }
+  .doctor-grid { grid-template-columns: repeat(2,1fr); }
+  .two-col, .three-col, .book-layout, .hero { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+}
+@media (max-width: 640px) {
+  .screen { padding: 20px 16px; }
+  .nav-inner { padding: 0 16px; }
+  .nav-tabs { display: none; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .doctor-grid { grid-template-columns: 1fr; }
+  .features { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      Smart Care
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="show('home')">Home</button>
+      <button class="nav-tab" onclick="show('patient')">Patient</button>
+      <button class="nav-tab" onclick="show('doctors')">Find Doctors</button>
+      <button class="nav-tab" onclick="show('book')">Book</button>
+      <button class="nav-tab" onclick="show('doctor-dash')">Doctor</button>
+      <button class="nav-tab" onclick="show('admin')">Admin</button>
+    </div>
+
+    <div class="nav-user">
+      <div class="user-chip">
+        <div class="user-av">JD</div>
+        John Doe
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+<!-- ════════════════════════════════════════
+     SCREEN: HOME
+════════════════════════════════════════ -->
+<div id="screen-home" class="screen active">
+
+  <div class="hero">
+    <div>
+      <div class="hero-pill">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="var(--accent)"><circle cx="12" cy="12" r="10"/></svg>
+        Trusted by 10,000+ Patients
+      </div>
+      <h1>Healthcare <em>simplified</em> for everyone.</h1>
+      <p>Connect with verified specialists, book appointments in seconds, and take control of your healthcare journey — all from one place.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-lg" onclick="show('doctors')">Find a Doctor</button>
+        <button class="btn btn-outline btn-lg" onclick="show('patient')">View Dashboard</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hstat-num">200+</div><div class="hstat-lbl">Verified Doctors</div></div>
+        <div><div class="hstat-num">50+</div><div class="hstat-lbl">Specializations</div></div>
+        <div><div class="hstat-num">4.9</div><div class="hstat-lbl">Average Rating</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="vis-card">
+        <div class="vc-row">
+          <div class="vc-av">EC</div>
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:14px;color:var(--ink);">Dr. Emily Carter</div>
+            <div style="font-size:12px;color:var(--muted);">Cardiologist &mdash; 12 yrs</div>
+          </div>
+          <span class="badge badge-green">Available</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;">
+          <span style="padding:6px 11px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:700;color:var(--ink2);">09:00</span>
+          <span style="padding:6px 11px;border:1.5px solid var(--accent);border-radius:6px;font-size:12px;font-weight:700;color:white;background:var(--accent);">10:30</span>
+          <span style="padding:6px 11px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:700;color:var(--ink2);">14:00</span>
+        </div>
+      </div>
+      <div class="vis-card">
+        <div class="vc-row">
+          <div class="vc-av" style="background:var(--green);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--ink);">Appointment Confirmed</div>
+            <div style="font-size:12px;color:var(--muted);">March 28, 2025 &mdash; 10:30 AM</div>
+          </div>
+        </div>
+      </div>
+      <div class="vis-card" style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;font-weight:700;">Consultation Fee</div>
+          <div style="font-family:var(--ff-display);font-size:26px;font-weight:700;color:var(--ink);margin-top:4px;">$150.00</div>
+        </div>
+        <button class="btn btn-primary btn-sm">Book Now</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon" style="background:var(--accent-lt);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </div>
+      <h3>Find Specialists</h3>
+      <p>Browse 200+ verified doctors across 50+ specializations with detailed profiles and verified patient ratings.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon" style="background:var(--green-lt);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <h3>Instant Booking</h3>
+      <p>Select a date and time slot, confirm your appointment, and get instant email confirmation in under 60 seconds.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon" style="background:var(--amber-lt);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3>Secure &amp; Private</h3>
+      <p>JWT-secured accounts, encrypted health records, and strict role-based access control across all user types.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: PATIENT DASHBOARD
+════════════════════════════════════════ -->
+<div id="screen-patient" class="screen">
+  <div class="ph">
+    <h1>Welcome back, <em>John</em></h1>
+    <p>Here is your health appointment overview</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-card-bar blue"></div>
+      <div class="stat-icon-wrap blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-num">8</div>
+      <div class="stat-lbl">Total Appointments</div>
+      <div class="stat-sub up">+2 this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar amber"></div>
+      <div class="stat-icon-wrap amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="stat-num">2</div>
+      <div class="stat-lbl">Pending</div>
+      <div class="stat-sub warn">Awaiting approval</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar green"></div>
+      <div class="stat-icon-wrap green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="stat-num">4</div>
+      <div class="stat-lbl">Approved</div>
+      <div class="stat-sub up">Upcoming</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar red"></div>
+      <div class="stat-icon-wrap red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="stat-num">2</div>
+      <div class="stat-lbl">Completed</div>
+      <div class="stat-sub muted">All time</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hd">
+        <h3>Recent Appointments</h3>
+        <button class="btn btn-primary btn-sm" onclick="show('doctors')">New Booking</button>
+      </div>
+      <div class="apt-row">
+        <div class="apt-av" style="background:#1a56db;">EC</div>
+        <div style="flex:1;">
+          <div class="apt-name">Dr. Emily Carter</div>
+          <div class="apt-sub">Cardiology &mdash; City Heart Hospital</div>
+        </div>
+        <div>
+          <div class="apt-time-val">10:30 AM</div>
+          <div class="apt-date">Mar 28, 2025</div>
+        </div>
+        <span class="badge badge-green">Approved</span>
+      </div>
+      <div class="apt-row">
+        <div class="apt-av" style="background:#6d28d9;">MC</div>
+        <div style="flex:1;">
+          <div class="apt-name">Dr. Michael Chen</div>
+          <div class="apt-sub">Dermatology &mdash; Skin Care Clinic</div>
+        </div>
+        <div>
+          <div class="apt-time-val">02:00 PM</div>
+          <div class="apt-date">Apr 3, 2025</div>
+        </div>
+        <span class="badge badge-amber">Pending</span>
+      </div>
+      <div class="apt-row">
+        <div class="apt-av" style="background:#0e9f6e;">SJ</div>
+        <div style="flex:1;">
+          <div class="apt-name">Dr. Sarah Johnson</div>
+          <div class="apt-sub">Pediatrics &mdash; Children's Care</div>
+        </div>
+        <div>
+          <div class="apt-time-val">09:00 AM</div>
+          <div class="apt-date">Mar 15, 2025</div>
+        </div>
+        <span class="badge badge-slate">Completed</span>
+      </div>
+      <div class="apt-row">
+        <div class="apt-av" style="background:#c81e1e;">RK</div>
+        <div style="flex:1;">
+          <div class="apt-name">Dr. Robert Kim</div>
+          <div class="apt-sub">Orthopedics &mdash; Bone &amp; Joint</div>
+        </div>
+        <div>
+          <div class="apt-time-val">11:30 AM</div>
+          <div class="apt-date">Mar 10, 2025</div>
+        </div>
+        <span class="badge badge-red">Cancelled</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-hd"><h3>Quick Actions</h3></div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <button class="btn btn-primary btn-block" onclick="show('doctors')">Find &amp; Book a Doctor</button>
+          <button class="btn btn-ghost btn-block">Download Health Records</button>
+          <button class="btn btn-ghost btn-block">Account Settings</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>Next Appointment</h3></div>
+        <div style="background:var(--accent-lt);border:1px solid #bfcdfa;border-radius:var(--r-sm);padding:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.4px;">Upcoming</div>
+          <div style="font-family:var(--ff-display);font-size:18px;font-weight:700;color:var(--ink);margin:6px 0 4px;">Dr. Emily Carter</div>
+          <div style="font-size:13px;color:var(--ink2);">Mar 28 &mdash; 10:30 AM &mdash; Cardiology</div>
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="btn btn-primary btn-sm">Get Directions</button>
+            <button class="btn btn-red btn-sm" onclick="toast('Cancelled','Appointment has been cancelled.')">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: FIND DOCTORS
+════════════════════════════════════════ -->
+<div id="screen-doctors" class="screen">
+  <div class="ph">
+    <h1>Find <em>Doctors</em></h1>
+    <p>200+ verified specialists across all fields</p>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <svg class="search-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search by name or specialization&hellip;" />
+    </div>
+    <select class="form-ctrl" style="width:200px;">
+      <option>All Specializations</option>
+      <option>Cardiology</option>
+      <option>Dermatology</option>
+      <option>Pediatrics</option>
+      <option>Orthopedics</option>
+      <option>Neurology</option>
+    </select>
+    <select class="form-ctrl" style="width:180px;">
+      <option>Sort: Top Rated</option>
+      <option>Sort: Experience</option>
+      <option>Sort: Lowest Fee</option>
+    </select>
+  </div>
+
+  <div class="doctor-grid">
+
+    <div class="doc-card" onclick="show('book')">
+      <div class="doc-top">
+        <div class="doc-av" style="background:#1a56db;">EC</div>
+        <div class="doc-name">Dr. Emily Carter</div>
+        <div class="doc-spec">Cardiologist</div>
+        <div style="margin-top:10px;"><span class="badge badge-green">Available Today</span></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-meta">
+          <div class="doc-meta-item"><div class="doc-meta-val">4.9</div><div class="doc-meta-key">Rating</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">12 yrs</div><div class="doc-meta-key">Experience</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">$150</div><div class="doc-meta-key">Fee</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">320+</div><div class="doc-meta-key">Patients</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:500;">City Heart Hospital</div>
+        <button class="btn btn-primary btn-block">View Profile &amp; Book</button>
+      </div>
+    </div>
+
+    <div class="doc-card" onclick="show('book')">
+      <div class="doc-top">
+        <div class="doc-av" style="background:#6d28d9;">MC</div>
+        <div class="doc-name">Dr. Michael Chen</div>
+        <div class="doc-spec">Dermatologist</div>
+        <div style="margin-top:10px;"><span class="badge badge-blue">Next: Tomorrow</span></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-meta">
+          <div class="doc-meta-item"><div class="doc-meta-val">4.8</div><div class="doc-meta-key">Rating</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">8 yrs</div><div class="doc-meta-key">Experience</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">$120</div><div class="doc-meta-key">Fee</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">210+</div><div class="doc-meta-key">Patients</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:500;">Skin Care Clinic</div>
+        <button class="btn btn-primary btn-block">View Profile &amp; Book</button>
+      </div>
+    </div>
+
+    <div class="doc-card" onclick="show('book')">
+      <div class="doc-top">
+        <div class="doc-av" style="background:#0e9f6e;">SJ</div>
+        <div class="doc-name">Dr. Sarah Johnson</div>
+        <div class="doc-spec">Pediatrician</div>
+        <div style="margin-top:10px;"><span class="badge badge-green">Available Today</span></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-meta">
+          <div class="doc-meta-item"><div class="doc-meta-val">5.0</div><div class="doc-meta-key">Rating</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">15 yrs</div><div class="doc-meta-key">Experience</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">$100</div><div class="doc-meta-key">Fee</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">500+</div><div class="doc-meta-key">Patients</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:500;">Children's Care Hospital</div>
+        <button class="btn btn-primary btn-block">View Profile &amp; Book</button>
+      </div>
+    </div>
+
+    <div class="doc-card" onclick="show('book')">
+      <div class="doc-top">
+        <div class="doc-av" style="background:#b45309;">RK</div>
+        <div class="doc-name">Dr. Robert Kim</div>
+        <div class="doc-spec">Orthopedic Surgeon</div>
+        <div style="margin-top:10px;"><span class="badge badge-amber">2 Slots Left</span></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-meta">
+          <div class="doc-meta-item"><div class="doc-meta-val">4.7</div><div class="doc-meta-key">Rating</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">10 yrs</div><div class="doc-meta-key">Experience</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">$180</div><div class="doc-meta-key">Fee</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">180+</div><div class="doc-meta-key">Patients</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:500;">Bone &amp; Joint Center</div>
+        <button class="btn btn-primary btn-block">View Profile &amp; Book</button>
+      </div>
+    </div>
+
+    <div class="doc-card" onclick="show('book')">
+      <div class="doc-top">
+        <div class="doc-av" style="background:#be185d;">AP</div>
+        <div class="doc-name">Dr. Aisha Patel</div>
+        <div class="doc-spec">Neurologist</div>
+        <div style="margin-top:10px;"><span class="badge badge-green">Available Today</span></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-meta">
+          <div class="doc-meta-item"><div class="doc-meta-val">4.9</div><div class="doc-meta-key">Rating</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">18 yrs</div><div class="doc-meta-key">Experience</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">$200</div><div class="doc-meta-key">Fee</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">400+</div><div class="doc-meta-key">Patients</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:500;">Neuro Care Institute</div>
+        <button class="btn btn-primary btn-block">View Profile &amp; Book</button>
+      </div>
+    </div>
+
+    <div class="doc-card" onclick="show('book')">
+      <div class="doc-top">
+        <div class="doc-av" style="background:#0369a1;">LW</div>
+        <div class="doc-name">Dr. Lisa Wang</div>
+        <div class="doc-spec">General Physician</div>
+        <div style="margin-top:10px;"><span class="badge badge-blue">Walk-ins Welcome</span></div>
+      </div>
+      <div class="doc-body">
+        <div class="doc-meta">
+          <div class="doc-meta-item"><div class="doc-meta-val">4.6</div><div class="doc-meta-key">Rating</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">6 yrs</div><div class="doc-meta-key">Experience</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">$80</div><div class="doc-meta-key">Fee</div></div>
+          <div class="doc-meta-item"><div class="doc-meta-val">700+</div><div class="doc-meta-key">Patients</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:500;">General Health Clinic</div>
+        <button class="btn btn-primary btn-block">View Profile &amp; Book</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: BOOK APPOINTMENT
+════════════════════════════════════════ -->
+<div id="screen-book" class="screen">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
+    <button class="btn btn-ghost btn-sm" onclick="show('doctors')">&larr; Back</button>
+    <h1 style="font-family:var(--ff-display);font-size:24px;font-weight:700;color:var(--ink);">Book Appointment</h1>
+  </div>
+
+  <div class="doc-strip">
+    <div class="strip-av" style="background:#1a56db;">EC</div>
+    <div style="flex:1;">
+      <div style="font-family:var(--ff-display);font-size:16px;font-weight:700;">Dr. Emily Carter</div>
+      <div style="font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-top:3px;">Cardiologist</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+        <span class="badge badge-green">4.9 Rating</span>
+        <span class="badge badge-blue">City Heart Hospital</span>
+        <span class="badge badge-slate">MBBS, MD</span>
+      </div>
+    </div>
+    <div style="text-align:right;padding-left:16px;border-left:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;font-weight:700;">Consultation Fee</div>
+      <div style="font-family:var(--ff-display);font-size:26px;font-weight:700;color:var(--ink);margin-top:4px;">$150</div>
+    </div>
+  </div>
+
+  <div class="book-layout">
+    <div class="card">
+      <div class="form-grp">
+        <label class="form-lbl">Select Date</label>
+        <input type="date" class="form-ctrl" value="2025-03-28" />
+      </div>
+
+      <div class="form-grp">
+        <label class="form-lbl">Select Time Slot</label>
+        <div class="slots-grid" style="margin-top:8px;">
+          <div class="slot-btn" onclick="pickSlot(this)">09:00</div>
+          <div class="slot-btn" onclick="pickSlot(this)">09:30</div>
+          <div class="slot-btn selected" onclick="pickSlot(this)">10:30</div>
+          <div class="slot-btn" onclick="pickSlot(this)">11:00</div>
+          <div class="slot-btn" onclick="pickSlot(this)">11:30</div>
+          <div class="slot-btn taken">14:00</div>
+          <div class="slot-btn" onclick="pickSlot(this)">14:30</div>
+          <div class="slot-btn" onclick="pickSlot(this)">15:00</div>
+          <div class="slot-btn" onclick="pickSlot(this)">15:30</div>
+          <div class="slot-btn" onclick="pickSlot(this)">16:00</div>
+          <div class="slot-btn" onclick="pickSlot(this)">16:30</div>
+          <div class="slot-btn" onclick="pickSlot(this)">17:00</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px;">Strikethrough slots are already booked</div>
+      </div>
+
+      <div class="form-grp">
+        <label class="form-lbl">Reason for Visit</label>
+        <textarea class="form-ctrl">Routine cardiac checkup and follow-up on ECG results.</textarea>
+      </div>
+
+      <div class="form-grp" style="margin-bottom:0;">
+        <label class="form-lbl">Additional Notes (Optional)</label>
+        <input type="text" class="form-ctrl" placeholder="Allergies, previous conditions&hellip;" />
+      </div>
+    </div>
+
+    <div class="book-summary">
+      <div style="font-family:var(--ff-display);font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);">Booking Summary</div>
+
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+        <div class="strip-av" style="background:#1a56db;width:42px;height:42px;font-size:14px;">EC</div>
+        <div>
+          <div style="font-weight:700;font-size:13px;">Dr. Emily Carter</div>
+          <div style="font-size:12px;color:var(--muted);">Cardiology</div>
+        </div>
+      </div>
+
+      <div class="sum-row"><span class="sum-key">Date</span><span class="sum-val">Mar 28, 2025</span></div>
+      <div class="sum-row"><span class="sum-key">Time</span><span class="sum-val" style="color:var(--accent);">10:30 &ndash; 11:00 AM</span></div>
+      <div class="sum-row"><span class="sum-key">Duration</span><span class="sum-val">30 minutes</span></div>
+      <div class="sum-row"><span class="sum-key">Location</span><span class="sum-val" style="font-size:12px;">City Heart Hospital</span></div>
+      <div class="sum-row"><span class="sum-key">Consultation</span><span class="sum-val">$150.00</span></div>
+
+      <div class="sum-total">
+        <span class="sum-total-key">Total</span>
+        <span class="sum-total-val">$150.00</span>
+      </div>
+
+      <button class="btn btn-primary btn-block" style="margin-top:18px;padding:12px;" onclick="confirmBook()">Confirm Appointment</button>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;">Free cancellation up to 24 hrs before</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: DOCTOR DASHBOARD
+════════════════════════════════════════ -->
+<div id="screen-doctor-dash" class="screen">
+
+  <div class="prof-hdr">
+    <div class="prof-av">
+      EC
+      <div class="verified-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    </div>
+    <div class="prof-info">
+      <h2>Dr. Emily Carter</h2>
+      <p>Cardiologist</p>
+      <div class="prof-tags">
+        <span class="badge badge-green">Approved</span>
+        <span class="badge badge-blue">4.9 Rating</span>
+        <span class="badge badge-slate">MBBS, MD &mdash; 12 yrs</span>
+      </div>
+    </div>
+    <div class="prof-fee">
+      <div class="prof-fee-lbl">Consultation Fee</div>
+      <div class="prof-fee-val">$150</div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-card-bar blue"></div>
+      <div class="stat-icon-wrap blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-num">24</div>
+      <div class="stat-lbl">Total Appointments</div>
+      <div class="stat-sub up">+6 this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar amber"></div>
+      <div class="stat-icon-wrap amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="stat-num">5</div>
+      <div class="stat-lbl">Pending Approval</div>
+      <div class="stat-sub warn">Needs review</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar green"></div>
+      <div class="stat-icon-wrap green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="stat-num">12</div>
+      <div class="stat-lbl">Approved</div>
+      <div class="stat-sub up">Upcoming</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar red"></div>
+      <div class="stat-icon-wrap red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="stat-num">7</div>
+      <div class="stat-lbl">Completed</div>
+      <div class="stat-sub muted">This month</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-hd">
+        <h3>Pending Approvals</h3>
+        <span class="badge badge-amber">5 pending</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Patient</th><th>Date &amp; Time</th><th>Reason</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div style="font-weight:700;color:var(--ink);">John Doe</div><div style="font-size:11px;color:var(--muted);">john@email.com</div></td>
+            <td><div style="font-weight:600;">Mar 28</div><div style="font-size:12px;color:var(--accent);">10:30 AM</div></td>
+            <td style="color:var(--muted);">Chest pain follow-up</td>
+            <td><div style="display:flex;gap:6px;"><button class="btn btn-green btn-sm" onclick="approveRow(this)">Approve</button><button class="btn btn-red btn-sm" onclick="rejectRow(this)">Reject</button></div></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:700;color:var(--ink);">Maria Garcia</div><div style="font-size:11px;color:var(--muted);">maria@email.com</div></td>
+            <td><div style="font-weight:600;">Apr 1</div><div style="font-size:12px;color:var(--accent);">02:00 PM</div></td>
+            <td style="color:var(--muted);">Routine ECG checkup</td>
+            <td><div style="display:flex;gap:6px;"><button class="btn btn-green btn-sm" onclick="approveRow(this)">Approve</button><button class="btn btn-red btn-sm" onclick="rejectRow(this)">Reject</button></div></td>
+          </tr>
+          <tr>
+            <td><div style="font-weight:700;color:var(--ink);">James Wilson</div><div style="font-size:11px;color:var(--muted);">james@email.com</div></td>
+            <td><div style="font-weight:600;">Apr 3</div><div style="font-size:12px;color:var(--accent);">11:00 AM</div></td>
+            <td style="color:var(--muted);">Hypertension monitoring</td>
+            <td><div style="display:flex;gap:6px;"><button class="btn btn-green btn-sm" onclick="approveRow(this)">Approve</button><button class="btn btn-red btn-sm" onclick="rejectRow(this)">Reject</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-hd"><h3>Availability</h3><button class="btn btn-ghost btn-sm">Edit</button></div>
+        <div class="avail-row"><span class="avail-label">Monday</span><span class="avail-time">09:00 &ndash; 17:00</span><button class="toggle-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off');"></button></div>
+        <div class="avail-row"><span class="avail-label">Tuesday</span><span class="avail-time">&mdash;</span><button class="toggle-sw off" onclick="this.classList.toggle('on');this.classList.toggle('off');"></button></div>
+        <div class="avail-row"><span class="avail-label">Wednesday</span><span class="avail-time">09:00 &ndash; 13:00</span><button class="toggle-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off');"></button></div>
+        <div class="avail-row"><span class="avail-label">Thursday</span><span class="avail-time">&mdash;</span><button class="toggle-sw off" onclick="this.classList.toggle('on');this.classList.toggle('off');"></button></div>
+        <div class="avail-row"><span class="avail-label">Friday</span><span class="avail-time">14:00 &ndash; 18:00</span><button class="toggle-sw on" onclick="this.classList.toggle('on');this.classList.toggle('off');"></button></div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h3>Weekly Appointments</h3></div>
+        <div class="mini-chart">
+          <div class="bar" style="height:40%;animation-delay:0s;"></div>
+          <div class="bar" style="height:70%;animation-delay:.08s;"></div>
+          <div class="bar" style="height:55%;animation-delay:.16s;"></div>
+          <div class="bar" style="height:90%;animation-delay:.24s;"></div>
+          <div class="bar" style="height:65%;animation-delay:.32s;"></div>
+          <div class="bar" style="height:80%;animation-delay:.40s;"></div>
+          <div class="bar" style="height:30%;animation-delay:.48s;opacity:0.35;"></div>
+        </div>
+        <div class="chart-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN: ADMIN DASHBOARD
+════════════════════════════════════════ -->
+<div id="screen-admin" class="screen">
+  <div class="ph">
+    <h1>Admin <em>Dashboard</em></h1>
+    <p>Platform overview &mdash; updated just now</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-card-bar blue"></div>
+      <div class="stat-icon-wrap blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="stat-num">1,284</div>
+      <div class="stat-lbl">Total Patients</div>
+      <div class="stat-sub up">+12% this month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar green"></div>
+      <div class="stat-icon-wrap green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div class="stat-num">48</div>
+      <div class="stat-lbl">Active Doctors</div>
+      <div class="stat-sub up">+3 new</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar amber"></div>
+      <div class="stat-icon-wrap amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-num">3,920</div>
+      <div class="stat-lbl">Total Appointments</div>
+      <div class="stat-sub up">+8% this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-bar red"></div>
+      <div class="stat-icon-wrap red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="stat-num">6</div>
+      <div class="stat-lbl">Pending Approvals</div>
+      <div class="stat-sub warn">Needs review</div>
+    </div>
+  </div>
+
+  <div class="three-col" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-hd"><h3>Appointment Status</h3></div>
+      <div style="display:flex;flex-direction:column;gap:13px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="font-weight:600;color:var(--green);">Approved</span><span style="font-weight:700;">1,240</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:65%;background:var(--green);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="font-weight:600;color:var(--amber);">Pending</span><span style="font-weight:700;">312</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:16%;background:var(--amber);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="font-weight:600;color:var(--slate);">Completed</span><span style="font-weight:700;">2,100</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:78%;background:var(--slate);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span style="font-weight:600;color:var(--red);">Cancelled</span><span style="font-weight:700;">268</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:14%;background:var(--red);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><h3>Top Specializations</h3></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:8px;height:8px;border-radius:2px;background:var(--accent);"></div><span style="font-size:13px;font-weight:500;">Cardiology</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:700;">820</span><span class="badge badge-blue">+14%</span></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:8px;height:8px;border-radius:2px;background:#6d28d9;"></div><span style="font-size:13px;font-weight:500;">Dermatology</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:700;">640</span><span class="badge badge-slate">+8%</span></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:8px;height:8px;border-radius:2px;background:var(--green);"></div><span style="font-size:13px;font-weight:500;">Pediatrics</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:700;">590</span><span class="badge badge-green">+22%</span></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:8px;height:8px;border-radius:2px;background:var(--amber);"></div><span style="font-size:13px;font-weight:500;">Orthopedics</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:700;">410</span><span class="badge badge-amber">+5%</span></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:9px;"><div style="width:8px;height:8px;border-radius:2px;background:var(--red);"></div><span style="font-size:13px;font-weight:500;">Neurology</span></div>
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:700;">360</span><span class="badge badge-red">+18%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><h3>Monthly Volume</h3></div>
+      <div class="mini-chart" style="height:80px;">
+        <div class="bar" style="height:45%;animation-delay:0s;"></div>
+        <div class="bar" style="height:60%;animation-delay:.07s;"></div>
+        <div class="bar" style="height:50%;animation-delay:.14s;"></div>
+        <div class="bar" style="height:75%;animation-delay:.21s;"></div>
+        <div class="bar" style="height:85%;animation-delay:.28s;"></div>
+        <div class="bar" style="height:70%;animation-delay:.35s;"></div>
+        <div class="bar" style="height:90%;animation-delay:.42s;"></div>
+        <div class="bar" style="height:80%;animation-delay:.49s;"></div>
+        <div class="bar" style="height:95%;animation-delay:.56s;"></div>
+        <div class="bar" style="height:100%;animation-delay:.63s;"></div>
+        <div class="bar" style="height:88%;animation-delay:.70s;opacity:0.4;"></div>
+        <div class="bar" style="height:50%;animation-delay:.77s;opacity:0.2;"></div>
+      </div>
+      <div class="chart-labels"><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd">
+      <h3>Pending Doctor Approvals</h3>
+      <span class="badge badge-amber">6 pending</span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Doctor</th><th>Specialization</th><th>Qualification</th><th>Experience</th><th>Fee</th><th>Registered</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div style="font-weight:700;color:var(--ink);">Dr. Ahmed Hassan</div><div style="font-size:11px;color:var(--muted);">ahmed@email.com</div></td>
+          <td><span class="badge badge-blue">Gastroenterology</span></td>
+          <td>MBBS, MD</td><td>7 yrs</td><td>$130</td>
+          <td style="color:var(--muted);font-size:12px;">Mar 20, 2025</td>
+          <td><div style="display:flex;gap:7px;"><button class="btn btn-green btn-sm" onclick="approveRow(this)">Approve</button><button class="btn btn-red btn-sm" onclick="rejectRow(this)">Reject</button></div></td>
+        </tr>
+        <tr>
+          <td><div style="font-weight:700;color:var(--ink);">Dr. Priya Sharma</div><div style="font-size:11px;color:var(--muted);">priya@email.com</div></td>
+          <td><span class="badge badge-slate">Psychiatry</span></td>
+          <td>MBBS, DPM</td><td>5 yrs</td><td>$160</td>
+          <td style="color:var(--muted);font-size:12px;">Mar 22, 2025</td>
+          <td><div style="display:flex;gap:7px;"><button class="btn btn-green btn-sm" onclick="approveRow(this)">Approve</button><button class="btn btn-red btn-sm" onclick="rejectRow(this)">Reject</button></div></td>
+        </tr>
+        <tr>
+          <td><div style="font-weight:700;color:var(--ink);">Dr. Carlos Rivera</div><div style="font-size:11px;color:var(--muted);">carlos@email.com</div></td>
+          <td><span class="badge badge-amber">Ophthalmology</span></td>
+          <td>MBBS, MS</td><td>11 yrs</td><td>$140</td>
+          <td style="color:var(--muted);font-size:12px;">Mar 25, 2025</td>
+          <td><div style="display:flex;gap:7px;"><button class="btn btn-green btn-sm" onclick="approveRow(this)">Approve</button><button class="btn btn-red btn-sm" onclick="rejectRow(this)">Reject</button></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<!-- TOAST -->
+<div id="toast">
+  <div class="toast-icon">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <div>
+    <div id="toast-title">Done</div>
+    <div id="toast-msg">Action completed successfully.</div>
+  </div>
+</div>
+
+<script>
+const SCREENS = ['home','patient','doctors','book','doctor-dash','admin'];
+let toastTimer;
+
+function show(id) {
+  SCREENS.forEach(s => document.getElementById('screen-'+s).classList.toggle('active', s===id));
+  document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active', SCREENS[i]===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickSlot(el) {
+  if (el.classList.contains('taken')) return;
+  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function confirmBook() {
+  toast('Appointment Confirmed', 'Dr. Emily Carter — Mar 28, 10:30 AM');
+  setTimeout(() => show('patient'), 2200);
+}
+
+function approveRow(btn) {
+  btn.closest('td').innerHTML = '<span class="badge badge-green">Approved</span>';
+  btn.closest('tr').style.opacity = '0.5';
+  toast('Approved', 'The request has been approved.');
+}
+
+function rejectRow(btn) {
+  btn.closest('td').innerHTML = '<span class="badge badge-red">Rejected</span>';
+  btn.closest('tr').style.opacity = '0.4';
+  toast('Rejected', 'The request has been rejected.');
+}
+
+function toast(title, msg) {
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent = msg;
+  const el = document.getElementById('toast');
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
