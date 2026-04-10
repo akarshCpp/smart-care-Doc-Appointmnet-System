@@ -42,7 +42,7 @@ const Register = () => {
     <div className="auth-page">
       <div className="auth-card" style={{ maxWidth: 560 }}>
         <div className="auth-logo">
-          <h1>🏥 Smart Care</h1>
+          <h1>Smart Care</h1>
           <p>Create your account</p>
         </div>
 

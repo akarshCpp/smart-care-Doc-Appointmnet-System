@@ -31,7 +31,7 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo">
-          <h1>🏥 Smart Care</h1>
+          <h1>Smart Care</h1>
           <p>Sign in to your account</p>
         </div>
 
@@ -69,13 +69,6 @@ const Login = () => {
 
         <div className="auth-footer">
           Don't have an account? <Link to="/register">Create one</Link>
-        </div>
-
-        <div style={{ marginTop: 20, padding: 16, background: '#f8fafc', borderRadius: 8, fontSize: 13 }}>
-          <strong>Demo Credentials:</strong><br />
-          Admin: admin@smartcare.com / admin123<br />
-          Doctor: doctor@smartcare.com / doctor123<br />
-          Patient: patient@smartcare.com / patient123
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-inner">
         <Link to="/" className="navbar-brand">
-          🏥 Smart Care
+          Smart Care
         </Link>
 
         <ul className="navbar-nav">
@@ -47,7 +47,7 @@ const Navbar = () => {
               )}
               <li>
                 <span style={{ padding: '8px 14px', fontSize: 14, color: '#64748b' }}>
-                  👋 {user.name.split(' ')[0]}
+                  {user.name.split(' ')[0]}
                 </span>
               </li>
               <li>
