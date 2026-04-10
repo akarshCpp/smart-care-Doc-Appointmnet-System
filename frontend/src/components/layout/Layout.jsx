@@ -4,23 +4,23 @@ import Navbar from './Navbar';
 import { useAuth } from '../../context/AuthContext';
 
 const patientLinks = [
-  { to: '/patient/dashboard', label: '🏠 Dashboard' },
-  { to: '/doctors', label: '🔍 Find Doctors' },
-  { to: '/patient/appointments', label: '📅 My Appointments' },
+  { to: '/patient/dashboard', label: 'Dashboard' },
+  { to: '/doctors', label: 'Find Doctors' },
+  { to: '/patient/appointments', label: 'My Appointments' },
 ];
 
 const doctorLinks = [
-  { to: '/doctor/dashboard', label: '🏠 Dashboard' },
-  { to: '/doctor/appointments', label: '📅 Appointments' },
-  { to: '/doctor/availability', label: '🕐 Availability' },
-  { to: '/doctor/profile', label: '👤 Profile' },
+  { to: '/doctor/dashboard', label: 'Dashboard' },
+  { to: '/doctor/appointments', label: 'Appointments' },
+  { to: '/doctor/availability', label: 'Availability' },
+  { to: '/doctor/profile', label: 'Profile' },
 ];
 
 const adminLinks = [
-  { to: '/admin/dashboard', label: '📊 Dashboard' },
-  { to: '/admin/users', label: '👥 Users' },
-  { to: '/admin/doctors', label: '👨‍⚕️ Doctors' },
-  { to: '/admin/appointments', label: '📅 Appointments' },
+  { to: '/admin/dashboard', label: 'Dashboard' },
+  { to: '/admin/users', label: 'Users' },
+  { to: '/admin/doctors', label: 'Doctors' },
+  { to: '/admin/appointments', label: 'Appointments' },
 ];
 
 const Layout = ({ children }) => {
