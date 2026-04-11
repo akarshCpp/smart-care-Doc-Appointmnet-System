@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
+import { HiArrowLeft, HiOutlineCalendar } from 'react-icons/hi';
 
 const TIME_SLOTS = [
   { startTime: '09:00', endTime: '09:30' },
@@ -53,8 +54,8 @@ const BookAppointment = () => {
 
   return (
     <div style={{ maxWidth: 640, margin: '0 auto' }}>
-      <button onClick={() => navigate(-1)} className="btn btn-ghost btn-sm" style={{ marginBottom: 24 }}>
-        ← Back
+      <button onClick={() => navigate(-1)} className="btn btn-ghost btn-sm" style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <HiArrowLeft /> Back
       </button>
 
       <div className="page-header">
@@ -110,8 +111,8 @@ const BookAppointment = () => {
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={loading}>
-            {loading ? 'Booking...' : '📅 Confirm Appointment'}
+          <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={loading} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+            {loading ? 'Booking...' : <><HiOutlineCalendar /> Confirm Appointment</>}
           </button>
         </form>
       </div>

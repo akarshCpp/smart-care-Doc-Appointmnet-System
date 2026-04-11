@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
+import { HiOutlineHeart, HiOutlineUserGroup, HiOutlineCheck, HiOutlineX } from 'react-icons/hi';
 
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -81,12 +82,12 @@ const ManageDoctors = () => {
                   <td>
                     <div className="flex gap-2">
                       {!doc.isApproved ? (
-                        <button className="btn btn-secondary btn-sm" onClick={() => handleApprove(doc._id, true)}>
-                          ✅ Approve
+                        <button className="btn btn-secondary btn-sm" onClick={() => handleApprove(doc._id, true)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <HiOutlineCheck /> Approve
                         </button>
                       ) : (
-                        <button className="btn btn-danger btn-sm" onClick={() => handleApprove(doc._id, false)}>
-                          ❌ Revoke
+                        <button className="btn btn-danger btn-sm" onClick={() => handleApprove(doc._id, false)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <HiOutlineX /> Revoke
                         </button>
                       )}
                     </div>

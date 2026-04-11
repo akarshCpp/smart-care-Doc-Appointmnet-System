@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import { format } from 'date-fns';
+import { 
+  HiOutlineCalendar, 
+  HiOutlineClock, 
+  HiOutlineCheckCircle, 
+  HiOutlineFlag,
+  HiOutlineSearch,
+  HiOutlineClipboardList
+} from 'react-icons/hi';
 
 const PatientDashboard = () => {
   const { user } = useAuth();
@@ -28,25 +36,25 @@ const PatientDashboard = () => {
   return (
     <div>
       <div className="page-header">
-        <h1>Welcome back, {user.name.split(' ')[0]}! 👋</h1>
+        <h1>Welcome back, {user.name.split(' ')[0]}!</h1>
         <p>Here's an overview of your health appointments</p>
       </div>
 
       <div className="grid-4" style={{ marginBottom: 28 }}>
         <div className="stat-card">
-          <div className="stat-icon blue">📅</div>
+          <div className="stat-icon blue"><HiOutlineCalendar /></div>
           <div><div className="stat-label">Total</div><div className="stat-value">{counts.total}</div></div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon orange">⏳</div>
+          <div className="stat-icon orange"><HiOutlineClock /></div>
           <div><div className="stat-label">Pending</div><div className="stat-value">{counts.pending}</div></div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon green">✅</div>
+          <div className="stat-icon green"><HiOutlineCheckCircle /></div>
           <div><div className="stat-label">Approved</div><div className="stat-value">{counts.approved}</div></div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon blue">🏁</div>
+          <div className="stat-icon blue"><HiOutlineFlag /></div>
           <div><div className="stat-label">Completed</div><div className="stat-value">{counts.completed}</div></div>
         </div>
       </div>
@@ -80,11 +88,11 @@ const PatientDashboard = () => {
         <div className="card">
           <h3 style={{ fontWeight: 700, marginBottom: 20, color: 'var(--primary-dark)' }}>Quick Actions</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <Link to="/doctors" className="btn btn-primary btn-block">
-              🔍 Find & Book a Doctor
+            <Link to="/doctors" className="btn btn-primary btn-block" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+              <HiOutlineSearch /> Find & Book a Doctor
             </Link>
-            <Link to="/patient/appointments" className="btn btn-outline btn-block">
-              📋 View All Appointments
+            <Link to="/patient/appointments" className="btn btn-outline btn-block" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+              <HiOutlineClipboardList /> View All Appointments
             </Link>
           </div>
         </div>

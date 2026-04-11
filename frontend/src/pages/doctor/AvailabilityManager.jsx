@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
+import { HiOutlineSave, HiOutlinePlus, HiOutlineX } from 'react-icons/hi';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -79,14 +80,18 @@ const AvailabilityManager = () => {
               <input type="number" className="form-control" value={slot.slotDuration}
                 onChange={e => updateSlot(idx, 'slotDuration', e.target.value)} min={15} step={15} />
             </div>
-            <button className="btn btn-danger btn-sm" onClick={() => removeSlot(idx)} style={{ marginBottom: 0 }}>✕</button>
+            <button className="btn btn-danger btn-sm" onClick={() => removeSlot(idx)} style={{ marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <HiOutlineX />
+            </button>
           </div>
         ))}
 
         <div className="flex gap-3" style={{ marginTop: 24 }}>
-          <button className="btn btn-outline" onClick={addSlot}>+ Add Time Slot</button>
-          <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-            {saving ? 'Saving...' : '💾 Save Availability'}
+          <button className="btn btn-outline" onClick={addSlot} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <HiOutlinePlus /> Add Time Slot
+          </button>
+          <button className="btn btn-primary" onClick={handleSave} disabled={saving} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {saving ? 'Saving...' : <><HiOutlineSave /> Save Availability</>}
           </button>
         </div>
       </div>

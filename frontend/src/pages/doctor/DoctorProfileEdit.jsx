@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
+import { HiOutlineUser, HiOutlineSave } from 'react-icons/hi';
 
 
 const DoctorProfileEdit = () => {
@@ -102,8 +103,8 @@ const DoctorProfileEdit = () => {
               placeholder="Tell patients about yourself..." />
           </div>
 
-          <button type="submit" className="btn btn-primary" disabled={saving}>
-            {saving ? 'Saving...' : '💾 Save Changes'}
+          <button type="submit" className="btn btn-primary" disabled={saving} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+            {saving ? 'Saving...' : <><HiOutlineSave /> Save Changes</>}
           </button>
         </form>
       </div>
