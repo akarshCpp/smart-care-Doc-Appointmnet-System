@@ -124,17 +124,17 @@ body {
 .btn-primary {
   background: var(--primary);
   color: white;
-  box-shadow: 0 2px 8px rgba(26, 82, 118, 0.25);
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(26, 82, 118, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(67, 97, 238, 0.35);
 }
 .btn-secondary {
   background: var(--secondary);
   color: white;
-  box-shadow: 0 2px 8px rgba(46, 134, 193, 0.25);
+  box-shadow: 0 4px 12px rgba(72, 149, 239, 0.25);
 }
 .btn-secondary:hover:not(:disabled) {
   background: var(--secondary-dark);
