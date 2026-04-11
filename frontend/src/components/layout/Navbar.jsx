@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { HiPlus } from 'react-icons/hi';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -15,7 +16,9 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-inner">
         <Link to="/" className="navbar-brand">
-          <span className="navbar-brand-icon">+</span>
+          <span className="navbar-brand-icon">
+            <HiPlus />
+          </span>
           Smart Care
         </Link>
 

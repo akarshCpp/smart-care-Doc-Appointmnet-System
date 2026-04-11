@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { getDoctorAvatar } from '../../utils/avatarHelper';
+import { 
+  HiOutlineSearch, 
+  HiStar, 
+  HiBriefcase, 
+  HiAcademicCap, 
+  HiOutlineOfficeBuilding 
+} from 'react-icons/hi';
 
 const DoctorList = () => {
   const [doctors, setDoctors] = useState([]);
@@ -39,8 +47,6 @@ const DoctorList = () => {
     d.user?.name?.toLowerCase().includes(search.toLowerCase()) ||
     d.specialization?.toLowerCase().includes(search.toLowerCase())
   );
-
-  const getInitials = (name) => name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'DR';
 
   if (loading) return <div className="spinner" />;
 
@@ -87,7 +93,7 @@ const DoctorList = () => {
 
       {filtered.length === 0 ? (
         <div className="empty-state">
-          <div style={{ fontSize: 48 }}>🔍</div>
+          <div style={{ fontSize: 48, color: 'var(--primary-soft)' }}><HiOutlineSearch /></div>
           <h3>No doctors found</h3>
           <p>Try adjusting your search criteria</p>
         </div>
@@ -96,20 +102,42 @@ const DoctorList = () => {
           {filtered.map((doc) => (
             <div key={doc._id} className="doctor-card" onClick={() => navigate(`/doctors/${doc._id}`)}>
               <div className="doctor-card-header">
-                <div className="doctor-avatar">{getInitials(doc.user?.name)}</div>
+                <img 
+                  src={getDoctorAvatar(doc.user?.name)} 
+                  alt={doc.user?.name}
+                  className="doctor-avatar"
+                  style={{ 
+                    width: 90, height: 90, 
+                    borderRadius: '50%', 
+                    border: '3px solid white',
+                    display: 'block', margin: '0 auto 12px',
+                    objectFit: 'cover',
+                    background: 'var(--primary-light)'
+                  }} 
+                />
                 <div className="doctor-name">Dr. {doc.user?.name}</div>
                 <div className="doctor-spec">{doc.specialization}</div>
               </div>
               <div className="doctor-card-body">
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <span className="text-sm text-gray">⭐ {doc.rating || 'New'}</span>
-                  <span className="text-sm text-gray">💼 {doc.experience} yrs</span>
+                  <span className="text-sm text-gray" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <HiStar /> {doc.rating || 'New'}
+                  </span>
+                  <span className="text-sm text-gray" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <HiBriefcase /> {doc.experience} yrs
+                  </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-                  <span className="text-sm text-gray">🎓 {doc.qualification}</span>
+                  <span className="text-sm text-gray" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <HiAcademicCap /> {doc.qualification}
+                  </span>
                   <span className="text-sm" style={{ color: 'var(--success)', fontWeight: 700 }}>${doc.consultationFee}</span>
                 </div>
-                {doc.hospital && <p className="text-sm text-gray" style={{ marginBottom: 12 }}>🏥 {doc.hospital}</p>}
+                {doc.hospital && (
+                  <p className="text-sm text-gray" style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <HiOutlineOfficeBuilding /> {doc.hospital}
+                  </p>
+                )}
                 <button className="btn btn-primary btn-block btn-sm">View Profile & Book</button>
               </div>
             </div>

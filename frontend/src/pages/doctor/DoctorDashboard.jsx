@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import { format } from 'date-fns';
+import { 
+  HiOutlineCalendar, 
+  HiOutlineClock, 
+  HiOutlineCheckCircle, 
+  HiOutlineExclamation,
+  HiOutlineUser,
+  HiOutlineBriefcase
+} from 'react-icons/hi';
 
 const DoctorDashboard = () => {
   const { user } = useAuth();
@@ -33,31 +41,31 @@ const DoctorDashboard = () => {
   return (
     <div>
       <div className="page-header">
-        <h1>Doctor Dashboard 👨‍⚕️</h1>
+        <h1>Doctor Dashboard</h1>
         <p>Welcome back, Dr. {user.name}</p>
       </div>
 
       {doctorProfile && !doctorProfile.isApproved && (
-        <div className="alert alert-warning" style={{ marginBottom: 24 }}>
-          ⚠️ Your account is pending admin approval. You'll be able to receive appointments once approved.
+        <div className="alert alert-warning" style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <HiOutlineExclamation size={20} /> Your account is pending admin approval. You'll be able to receive appointments once approved.
         </div>
       )}
 
       <div className="grid-4" style={{ marginBottom: 28 }}>
         <div className="stat-card">
-          <div className="stat-icon blue">📅</div>
+          <div className="stat-icon blue"><HiOutlineBriefcase /></div>
           <div><div className="stat-label">Total Appointments</div><div className="stat-value">{counts.total}</div></div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon orange">⏳</div>
+          <div className="stat-icon orange"><HiOutlineClock /></div>
           <div><div className="stat-label">Pending</div><div className="stat-value">{counts.pending}</div></div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon green">✅</div>
+          <div className="stat-icon green"><HiOutlineCheckCircle /></div>
           <div><div className="stat-label">Approved</div><div className="stat-value">{counts.approved}</div></div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon blue">📆</div>
+          <div className="stat-icon blue"><HiOutlineCalendar /></div>
           <div><div className="stat-label">Today</div><div className="stat-value">{counts.today}</div></div>
         </div>
       </div>
@@ -91,14 +99,14 @@ const DoctorDashboard = () => {
         <div className="card">
           <h3 style={{ fontWeight: 700, marginBottom: 20, color: 'var(--primary-dark)' }}>Quick Actions</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <Link to="/doctor/appointments" className="btn btn-primary btn-block">
-              📅 Manage Appointments
+            <Link to="/doctor/appointments" className="btn btn-primary btn-block" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+              <HiOutlineCalendar /> Manage Appointments
             </Link>
-            <Link to="/doctor/availability" className="btn btn-outline btn-block">
-              🕐 Update Availability
+            <Link to="/doctor/availability" className="btn btn-outline btn-block" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+              <HiOutlineClock /> Update Availability
             </Link>
-            <Link to="/doctor/profile" className="btn btn-ghost btn-block">
-              👤 Edit Profile
+            <Link to="/doctor/profile" className="btn btn-ghost btn-block" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+              <HiOutlineUser /> Edit Profile
             </Link>
           </div>
         </div>

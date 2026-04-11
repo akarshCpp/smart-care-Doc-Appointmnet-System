@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import { getDoctorAvatar } from '../../utils/avatarHelper';
+import { 
+  HiArrowLeft, 
+  HiStar, 
+  HiBriefcase, 
+  HiOutlineCurrencyDollar, 
+  HiOutlineCalendar 
+} from 'react-icons/hi';
 
 const DoctorProfile = () => {
   const { id } = useParams();
@@ -27,8 +35,6 @@ const DoctorProfile = () => {
   if (loading) return <div className="spinner" />;
   if (!doctor) return <div className="empty-state"><h3>Doctor not found</h3></div>;
 
-  const getInitials = (name) => name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'DR';
-
   const handleBook = () => {
     if (!user) return navigate('/login');
     if (user.role !== 'patient') return alert('Only patients can book appointments');
@@ -37,27 +43,42 @@ const DoctorProfile = () => {
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto' }}>
-      <button onClick={() => navigate(-1)} className="btn btn-ghost btn-sm" style={{ marginBottom: 24 }}>
-        ← Back
+      <button onClick={() => navigate(-1)} className="btn btn-ghost btn-sm" style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <HiArrowLeft /> Back
       </button>
 
-      <div className="card" style={{ marginBottom: 24 }}>
-        <div className="profile-header">
-          <div className="profile-avatar">
-            {getInitials(doctor.user?.name)}
-          </div>
+      <div className="card" style={{ marginBottom: 24, padding: '40px' }}>
+        <div className="profile-header" style={{ alignItems: 'center' }}>
+          <img 
+            src={getDoctorAvatar(doctor.user?.name)} 
+            alt={doctor.user?.name}
+            className="profile-avatar"
+            style={{ 
+              width: 120, height: 120, 
+              borderRadius: '50%', 
+              border: '4px solid var(--primary-light)',
+              objectFit: 'cover',
+              background: 'var(--white)'
+            }} 
+          />
           <div className="profile-info" style={{ flex: 1 }}>
             <h1>Dr. {doctor.user?.name}</h1>
             <p className="specialization">{doctor.specialization}</p>
             <p className="qualification">{doctor.qualification}</p>
             <div className="flex gap-3" style={{ flexWrap: 'wrap' }}>
-              <span className="badge badge-info">⭐ {doctor.rating || 0} Rating</span>
-              <span className="badge badge-success">💼 {doctor.experience} Years Exp.</span>
-              <span className="badge badge-warning">💲{doctor.consultationFee} / visit</span>
+              <span className="badge badge-info" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <HiStar /> {doctor.rating || 0} Rating
+              </span>
+              <span className="badge badge-success" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <HiBriefcase /> {doctor.experience} Years Exp.
+              </span>
+              <span className="badge badge-warning" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <HiOutlineCurrencyDollar />{doctor.consultationFee} / visit
+              </span>
             </div>
           </div>
-          <button className="btn btn-primary btn-lg" onClick={handleBook} style={{ borderRadius: 50 }}>
-            📅 Book Appointment
+          <button className="btn btn-primary btn-lg" onClick={handleBook} style={{ borderRadius: 50, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <HiOutlineCalendar /> Book Appointment
           </button>
         </div>
       </div>

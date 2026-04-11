@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
 import { format } from 'date-fns';
+import { 
+  HiOutlineCalendar, 
+  HiOutlineMail, 
+  HiOutlineDeviceMobile, 
+  HiOutlinePencilAlt,
+  HiOutlineCheck,
+  HiOutlineX,
+  HiOutlineFlag
+} from 'react-icons/hi';
 
 const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -45,7 +54,10 @@ const DoctorAppointments = () => {
       </div>
 
       {appointments.length === 0 ? (
-        <div className="empty-state"><div style={{ fontSize: 48 }}>📅</div><h3>No appointments found</h3></div>
+        <div className="empty-state">
+          <div style={{ fontSize: 48, color: 'var(--primary-soft)' }}><HiOutlineCalendar /></div>
+          <h3>No appointments found</h3>
+        </div>
       ) : (
         appointments.map(apt => (
           <div key={apt._id} className={`appointment-card ${apt.status}`}>
@@ -58,27 +70,29 @@ const DoctorAppointments = () => {
                   apt.status === 'cancelled' ? 'danger' : 'gray'
                 }`}>{apt.status}</span>
               </div>
-              <p className="text-sm" style={{ marginBottom: 4, color: 'var(--gray-700)' }}>
-                📅 {format(new Date(apt.date), 'MMMM dd, yyyy')} at {apt.timeSlot?.startTime} – {apt.timeSlot?.endTime}
+              <p className="text-sm" style={{ marginBottom: 4, color: 'var(--gray-700)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <HiOutlineCalendar /> {format(new Date(apt.date), 'MMMM dd, yyyy')} at {apt.timeSlot?.startTime} – {apt.timeSlot?.endTime}
               </p>
-              <p className="text-sm" style={{ color: 'var(--gray-500)' }}>📧 {apt.patient?.email} | 📱 {apt.patient?.phone || 'N/A'}</p>
-              <p className="text-sm" style={{ marginTop: 6, color: 'var(--gray-700)' }}>📝 <em>{apt.reason}</em></p>
+              <p className="text-sm" style={{ color: 'var(--gray-500)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <HiOutlineMail /> {apt.patient?.email} | <HiOutlineDeviceMobile /> {apt.patient?.phone || 'N/A'}
+              </p>
+              <p className="text-sm" style={{ marginTop: 6, color: 'var(--gray-700)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <HiOutlinePencilAlt /> <em>{apt.reason}</em>
+              </p>
             </div>
             {apt.status === 'pending' && (
               <div className="flex gap-2">
-                <button className="btn btn-secondary btn-sm" onClick={() => updateStatus(apt._id, 'approved')}>
-                  ✅ Approve
+                <button className="btn btn-secondary btn-sm" onClick={() => updateStatus(apt._id, 'approved')} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <HiOutlineCheck /> Approve
                 </button>
-                <button className="btn btn-danger btn-sm" onClick={() => updateStatus(apt._id, 'rejected')}>
-                  ❌ Reject
+                <button className="btn btn-danger btn-sm" onClick={() => updateStatus(apt._id, 'rejected')} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <HiOutlineX /> Reject
                 </button>
               </div>
             )}
-            {apt.status === 'approved' && (
-              <button className="btn btn-primary btn-sm" onClick={() => updateStatus(apt._id, 'completed')}>
-                🏁 Complete
-              </button>
-            )}
+                <button className="btn btn-primary btn-sm" onClick={() => updateStatus(apt._id, 'completed')} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <HiOutlineFlag /> Complete
+                </button>
           </div>
         ))
       )}

@@ -7,51 +7,52 @@
 }
 
 :root {
-  /* Primary — Deep Navy / Steel Blue */
-  --primary: #1A5276;
-  --primary-dark: #0B1F3F;
-  --primary-light: #EBF5FB;
-  --primary-hover: #154360;
+  /* Primary — Smooth Blue (from brand image) */
+  --primary: #2B6CB0;
+  --primary-dark: #1B4D80;
+  --primary-light: #D6E8F8;
+  --primary-hover: #245B96;
+  --primary-soft: #C5DBF0;
 
-  /* Secondary — Medium Blue */
-  --secondary: #2E86C1;
-  --secondary-dark: #1B6CA1;
-  --secondary-light: #D6EAF8;
+  /* Secondary — Light Blue */
+  --secondary: #4A9FD9;
+  --secondary-dark: #3182B8;
+  --secondary-light: #DCF0FA;
 
-  /* Accent — Teal */
-  --accent: #17A2B8;
-  --accent-light: #D1F2EB;
+  /* Accent — Soft Teal */
+  --accent: #38A3C3;
+  --accent-light: #DDF2F8;
 
   /* Status */
-  --success: #27AE60;
-  --success-light: #E8F8F0;
-  --warning: #F39C12;
-  --warning-light: #FDF2E1;
-  --danger: #E74C3C;
-  --danger-light: #FDEDEC;
+  --success: #38A169;
+  --success-light: #E6F6ED;
+  --warning: #DD9A1F;
+  --warning-light: #FEF5E0;
+  --danger: #E05252;
+  --danger-light: #FDE8E8;
 
   /* Neutrals */
-  --dark: #1C2A3A;
-  --gray-900: #2C3E50;
-  --gray-700: #4A6274;
-  --gray-500: #7F8C97;
-  --gray-400: #A0ADB8;
-  --gray-300: #C8D1D9;
-  --gray-200: #E2E8ED;
-  --gray-100: #F0F3F6;
-  --gray-50: #F7F9FB;
+  --dark: #1A3252;
+  --gray-900: #243B55;
+  --gray-700: #4A6683;
+  --gray-500: #7B93A8;
+  --gray-400: #A3B5C5;
+  --gray-300: #C8D6E0;
+  --gray-200: #E1E9F0;
+  --gray-100: #EFF4F8;
+  --gray-50: #F5F8FC;
   --white: #ffffff;
 
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(11, 31, 63, 0.04);
-  --shadow-sm: 0 1px 3px rgba(11, 31, 63, 0.06), 0 1px 2px rgba(11, 31, 63, 0.04);
-  --shadow: 0 4px 12px rgba(11, 31, 63, 0.06), 0 1px 3px rgba(11, 31, 63, 0.04);
-  --shadow-md: 0 6px 16px rgba(11, 31, 63, 0.08), 0 2px 6px rgba(11, 31, 63, 0.04);
-  --shadow-lg: 0 12px 32px rgba(11, 31, 63, 0.1), 0 4px 8px rgba(11, 31, 63, 0.04);
+  /* Shadows — softer blue tint */
+  --shadow-xs: 0 1px 2px rgba(27, 77, 128, 0.04);
+  --shadow-sm: 0 1px 3px rgba(27, 77, 128, 0.06), 0 1px 2px rgba(27, 77, 128, 0.03);
+  --shadow: 0 4px 12px rgba(27, 77, 128, 0.07), 0 1px 3px rgba(27, 77, 128, 0.04);
+  --shadow-md: 0 6px 16px rgba(27, 77, 128, 0.09), 0 2px 6px rgba(27, 77, 128, 0.04);
+  --shadow-lg: 0 12px 32px rgba(27, 77, 128, 0.12), 0 4px 8px rgba(27, 77, 128, 0.04);
 
   /* Radius */
-  --radius: 12px;
-  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-sm: 10px;
   --radius-xs: 6px;
   --radius-pill: 50px;
 }
@@ -728,8 +729,8 @@ tbody tr:hover {
   top: 0;
   left: 0;
   right: 0;
-  height: 340px;
-  background: var(--primary-dark);
+  height: 400px;
+  background: var(--primary-soft);
   z-index: 0;
 }
 .auth-card {
@@ -834,10 +835,9 @@ tbody tr:hover {
    HOME HERO
    =========================== */
 .hero {
-  background: var(--primary-dark);
-  color: white;
-  padding: 80px 24px 60px;
-  text-align: center;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 80px 24px;
   position: relative;
   overflow: hidden;
 }
@@ -848,9 +848,9 @@ tbody tr:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background:
-    radial-gradient(circle at 20% 50%, rgba(26, 82, 118, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 50%, rgba(46, 134, 193, 0.2) 0%, transparent 50%);
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(43, 108, 176, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(74, 159, 217, 0.08) 0%, transparent 40%);
   pointer-events: none;
 }
 .hero-content {
@@ -860,18 +860,19 @@ tbody tr:hover {
   margin: 0 auto;
 }
 .hero h1 {
-  font-size: 52px;
+  font-size: 56px;
   font-weight: 900;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   line-height: 1.1;
   letter-spacing: -1.5px;
+  color: var(--primary-dark);
 }
 .hero p {
-  font-size: 18px;
-  opacity: 0.85;
-  max-width: 600px;
-  margin: 0 auto 36px;
-  line-height: 1.7;
+  font-size: 19px;
+  color: var(--gray-700);
+  max-width: 650px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
 }
 
 /* Hero Stats Bar */
@@ -879,34 +880,35 @@ tbody tr:hover {
   display: flex;
   justify-content: center;
   gap: 0;
-  margin-top: 48px;
-  background: rgba(255, 255, 255, 0.08);
+  margin-top: 56px;
+  background: white;
   border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-200);
   overflow: hidden;
 }
 .hero-stat {
-  padding: 24px 36px;
+  padding: 32px 40px;
   text-align: center;
   flex: 1;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid var(--gray-100);
 }
 .hero-stat:last-child {
   border-right: none;
 }
 .hero-stat-value {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 900;
-  color: white;
+  color: var(--primary-dark);
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .hero-stat-label {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.65);
-  font-weight: 500;
+  font-size: 13px;
+  color: var(--gray-500);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 /* Features Section */
@@ -950,13 +952,14 @@ tbody tr:hover {
 .feature-icon {
   width: 56px;
   height: 56px;
-  border-radius: var(--radius-sm);
   background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  margin: 0 auto 18px;
+  font-size: 24px;
+  margin: 0 auto 24px;
 }
 .feature-card h3 {
   font-weight: 700;

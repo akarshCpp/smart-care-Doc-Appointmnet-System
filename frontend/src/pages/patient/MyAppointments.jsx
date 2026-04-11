@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
 import { format } from 'date-fns';
+import { 
+  HiOutlineCalendar, 
+  HiOutlineOfficeBuilding, 
+  HiOutlinePencilAlt 
+} from 'react-icons/hi';
 
 const statusColors = {
   pending: 'warning', approved: 'success', cancelled: 'danger', completed: 'info', rejected: 'gray'
@@ -58,7 +63,7 @@ const MyAppointments = () => {
 
       {appointments.length === 0 ? (
         <div className="empty-state">
-          <div style={{ fontSize: 48 }}>📅</div>
+          <div style={{ fontSize: 48, color: 'var(--primary-soft)' }}><HiOutlineCalendar /></div>
           <h3>No appointments found</h3>
           <p>Book an appointment with one of our doctors</p>
         </div>
@@ -72,13 +77,13 @@ const MyAppointments = () => {
                 </h3>
                 <span className={`badge badge-${statusColors[apt.status]}`}>{apt.status}</span>
               </div>
-              <p className="text-sm" style={{ color: 'var(--gray-500)', marginBottom: 4 }}>
-                🏥 {apt.doctor?.specialization}
+              <p className="text-sm" style={{ color: 'var(--gray-500)', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <HiOutlineOfficeBuilding /> {apt.doctor?.specialization}
               </p>
-              <p className="text-sm" style={{ marginBottom: 4, color: 'var(--gray-700)' }}>
-                📅 {format(new Date(apt.date), 'MMMM dd, yyyy')} at {apt.timeSlot?.startTime}
+              <p className="text-sm" style={{ marginBottom: 4, color: 'var(--gray-700)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <HiOutlineCalendar /> {format(new Date(apt.date), 'MMMM dd, yyyy')} at {apt.timeSlot?.startTime}
               </p>
-              <p className="text-sm" style={{ color: 'var(--gray-500)' }}>📝 {apt.reason}</p>
+              <p className="text-sm" style={{ color: 'var(--gray-500)', display: 'flex', alignItems: 'center', gap: 6 }}><HiOutlinePencilAlt /> {apt.reason}</p>
             </div>
             {['pending', 'approved'].includes(apt.status) && (
               <button
