@@ -73,17 +73,8 @@ const Home = () => (
           </div>
         </div>
         
-        <div className="hero-image-wrapper" style={{ animation: 'fadeIn 1s ease-out' }}>
-          <img 
-            src={brandHero} 
-            alt="Smart Care Branding" 
-            style={{ 
-              width: '100%', 
-              height: 'auto', 
-              borderRadius: 'var(--radius)',
-              filter: 'drop-shadow(0 20px 50px rgba(43, 108, 176, 0.15))'
-            }} 
-          />
+        <div className="hero-image-wrapper">
+          <img src={brandHero} alt="Smart Care Branding" style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius)' }} />
         </div>
       </div>
 
@@ -94,6 +85,20 @@ const Home = () => (
             <div key={i} className="hero-stat">
               <div className="hero-stat-value">{s.value}</div>
               <div className="hero-stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Stats Section */}
+    <section style={{ padding: '60px 24px', background: 'var(--primary-light)' }}>
+      <div className="container">
+        <div className="grid-4">
+          {stats.map((stat, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <h2 style={{ fontSize: 40, color: 'var(--primary)', marginBottom: 5 }}>{stat.value}</h2>
+              <p style={{ color: 'var(--gray-700)', fontWeight: 600 }}>{stat.label}</p>
             </div>
           ))}
         </div>
