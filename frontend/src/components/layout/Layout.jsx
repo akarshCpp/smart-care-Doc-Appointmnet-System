@@ -4,23 +4,23 @@ import Navbar from './Navbar';
 import { useAuth } from '../../context/AuthContext';
 
 const patientLinks = [
-  { to: '/patient/dashboard', label: 'Dashboard' },
-  { to: '/doctors', label: 'Find Doctors' },
-  { to: '/patient/appointments', label: 'My Appointments' },
+  { to: '/patient/dashboard', label: 'Dashboard', icon: '📊' },
+  { to: '/doctors', label: 'Find Doctors', icon: '🔍' },
+  { to: '/patient/appointments', label: 'My Appointments', icon: '📅' },
 ];
 
 const doctorLinks = [
-  { to: '/doctor/dashboard', label: 'Dashboard' },
-  { to: '/doctor/appointments', label: 'Appointments' },
-  { to: '/doctor/availability', label: 'Availability' },
-  { to: '/doctor/profile', label: 'Profile' },
+  { to: '/doctor/dashboard', label: 'Dashboard', icon: '📊' },
+  { to: '/doctor/appointments', label: 'Appointments', icon: '📅' },
+  { to: '/doctor/availability', label: 'Availability', icon: '🕐' },
+  { to: '/doctor/profile', label: 'Profile', icon: '👤' },
 ];
 
 const adminLinks = [
-  { to: '/admin/dashboard', label: 'Dashboard' },
-  { to: '/admin/users', label: 'Users' },
-  { to: '/admin/doctors', label: 'Doctors' },
-  { to: '/admin/appointments', label: 'Appointments' },
+  { to: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
+  { to: '/admin/users', label: 'Users', icon: '👥' },
+  { to: '/admin/doctors', label: 'Doctors', icon: '🩺' },
+  { to: '/admin/appointments', label: 'Appointments', icon: '📅' },
 ];
 
 const Layout = ({ children }) => {
@@ -44,6 +44,7 @@ const Layout = ({ children }) => {
                     to={link.to}
                     className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
                   >
+                    <span className="sidebar-link-icon">{link.icon}</span>
                     {link.label}
                   </NavLink>
                 </li>

@@ -43,7 +43,7 @@ const DoctorDashboard = () => {
         </div>
       )}
 
-      <div className="grid-4" style={{ marginBottom: 32 }}>
+      <div className="grid-4" style={{ marginBottom: 28 }}>
         <div className="stat-card">
           <div className="stat-icon blue">📅</div>
           <div><div className="stat-label">Total Appointments</div><div className="stat-value">{counts.total}</div></div>
@@ -65,18 +65,18 @@ const DoctorDashboard = () => {
       <div className="grid-2">
         <div className="card">
           <div className="flex-between" style={{ marginBottom: 20 }}>
-            <h3 style={{ fontWeight: 700 }}>Recent Appointments</h3>
+            <h3 style={{ fontWeight: 700, color: 'var(--primary-dark)' }}>Recent Appointments</h3>
             <Link to="/doctor/appointments" className="btn btn-ghost btn-sm">View All</Link>
           </div>
           {appointments.slice(0, 5).map(apt => (
-            <div key={apt._id} style={{ padding: '12px 0', borderBottom: '1px solid #e2e8f0' }}>
+            <div key={apt._id} style={{ padding: '12px 0', borderBottom: '1px solid var(--gray-100)' }}>
               <div className="flex-between">
                 <div>
-                  <p style={{ fontWeight: 600, fontSize: 14 }}>{apt.patient?.name}</p>
-                  <p style={{ fontSize: 12, color: '#64748b' }}>
+                  <p style={{ fontWeight: 600, fontSize: 14, color: 'var(--dark)' }}>{apt.patient?.name}</p>
+                  <p style={{ fontSize: 12, color: 'var(--gray-500)' }}>
                     {format(new Date(apt.date), 'MMM dd, yyyy')} · {apt.timeSlot?.startTime}
                   </p>
-                  <p style={{ fontSize: 12, color: '#94a3b8' }}>{apt.reason}</p>
+                  <p style={{ fontSize: 12, color: 'var(--gray-400)' }}>{apt.reason}</p>
                 </div>
                 <span className={`badge badge-${
                   apt.status === 'approved' ? 'success' :
@@ -85,12 +85,12 @@ const DoctorDashboard = () => {
               </div>
             </div>
           ))}
-          {appointments.length === 0 && <p style={{ color: '#64748b', textAlign: 'center', padding: 20 }}>No appointments yet</p>}
+          {appointments.length === 0 && <p style={{ color: 'var(--gray-500)', textAlign: 'center', padding: 20, fontSize: 14 }}>No appointments yet</p>}
         </div>
 
         <div className="card">
-          <h3 style={{ fontWeight: 700, marginBottom: 20 }}>Quick Actions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <h3 style={{ fontWeight: 700, marginBottom: 20, color: 'var(--primary-dark)' }}>Quick Actions</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <Link to="/doctor/appointments" className="btn btn-primary btn-block">
               📅 Manage Appointments
             </Link>

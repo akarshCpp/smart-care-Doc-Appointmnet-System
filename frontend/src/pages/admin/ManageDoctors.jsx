@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
-import { format } from 'date-fns';
 
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -39,15 +38,15 @@ const ManageDoctors = () => {
         </div>
         <div className="flex gap-2">
           {['all', 'pending', 'approved'].map(f => (
-            <button key={f} className={`btn btn-sm ${filter === f ? 'btn-primary' : 'btn-ghost'}`}
-              onClick={() => setFilter(f)} style={{ textTransform: 'capitalize' }}>
-              {f}
+            <button key={f} className={`filter-pill${filter === f ? ' active' : ''}`}
+              onClick={() => setFilter(f)}>
+              {f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="card">
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div className="table-wrapper">
           <table>
             <thead>
@@ -66,8 +65,8 @@ const ManageDoctors = () => {
                 <tr key={doc._id}>
                   <td>
                     <div>
-                      <p style={{ fontWeight: 600 }}>{doc.user?.name}</p>
-                      <p style={{ fontSize: 12, color: '#64748b' }}>{doc.user?.email}</p>
+                      <p style={{ fontWeight: 600, color: 'var(--dark)' }}>{doc.user?.name}</p>
+                      <p style={{ fontSize: 12, color: 'var(--gray-500)' }}>{doc.user?.email}</p>
                     </div>
                   </td>
                   <td>{doc.specialization}</td>
@@ -97,7 +96,7 @@ const ManageDoctors = () => {
             </tbody>
           </table>
           {filtered.length === 0 && (
-            <p style={{ textAlign: 'center', padding: 40, color: '#64748b' }}>No doctors found</p>
+            <p style={{ textAlign: 'center', padding: 40, color: 'var(--gray-500)', fontSize: 14 }}>No doctors found</p>
           )}
         </div>
       </div>

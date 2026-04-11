@@ -40,15 +40,23 @@ const Register = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-card" style={{ maxWidth: 560 }}>
+      <div className="auth-card" style={{ maxWidth: 540 }}>
         <div className="auth-logo">
+          <div style={{
+            width: 48, height: 48,
+            background: 'var(--primary)',
+            borderRadius: 10,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', fontSize: 24, fontWeight: 800,
+            margin: '0 auto 14px',
+          }}>+</div>
           <h1>Smart Care</h1>
           <p>Create your account</p>
         </div>
 
         {error && <div className="alert alert-error">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
           <div className="grid-2">
             <div className="form-group">
               <label className="form-label">Full Name</label>
@@ -88,8 +96,19 @@ const Register = () => {
 
           {form.role === 'doctor' && (
             <>
-              <hr style={{ margin: '16px 0', borderColor: '#e2e8f0' }} />
-              <p style={{ fontSize: 14, fontWeight: 600, color: '#64748b', marginBottom: 16 }}>Doctor Information</p>
+              <div style={{
+                height: 1,
+                background: 'var(--gray-200)',
+                margin: '8px 0 20px',
+              }} />
+              <p style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: 'var(--gray-500)',
+                marginBottom: 16,
+                textTransform: 'uppercase',
+                letterSpacing: 0.5,
+              }}>Doctor Information</p>
               <div className="grid-2">
                 <div className="form-group">
                   <label className="form-label">Specialization</label>

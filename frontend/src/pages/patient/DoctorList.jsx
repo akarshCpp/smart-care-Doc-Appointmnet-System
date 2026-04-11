@@ -51,6 +51,26 @@ const DoctorList = () => {
         <p>Search from our network of qualified healthcare professionals</p>
       </div>
 
+      {/* Filter Pills */}
+      <div className="filter-pills">
+        <button
+          className={`filter-pill${selectedSpec === '' ? ' active' : ''}`}
+          onClick={() => setSelectedSpec('')}
+        >
+          All
+        </button>
+        {specializations.map((s) => (
+          <button
+            key={s}
+            className={`filter-pill${selectedSpec === s ? ' active' : ''}`}
+            onClick={() => setSelectedSpec(s)}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+
+      {/* Search Bar */}
       <div className="search-bar">
         <div className="search-input-wrapper">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -63,10 +83,6 @@ const DoctorList = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <select className="form-control" style={{ width: 220 }} value={selectedSpec} onChange={(e) => setSelectedSpec(e.target.value)}>
-          <option value="">All Specializations</option>
-          {specializations.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
       </div>
 
       {filtered.length === 0 ? (
@@ -91,7 +107,7 @@ const DoctorList = () => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
                   <span className="text-sm text-gray">🎓 {doc.qualification}</span>
-                  <span className="text-sm" style={{ color: '#059669', fontWeight: 600 }}>${doc.consultationFee}</span>
+                  <span className="text-sm" style={{ color: 'var(--success)', fontWeight: 700 }}>${doc.consultationFee}</span>
                 </div>
                 {doc.hospital && <p className="text-sm text-gray" style={{ marginBottom: 12 }}>🏥 {doc.hospital}</p>}
                 <button className="btn btn-primary btn-block btn-sm">View Profile & Book</button>

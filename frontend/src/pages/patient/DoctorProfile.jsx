@@ -42,28 +42,21 @@ const DoctorProfile = () => {
       </button>
 
       <div className="card" style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-          <div
-            style={{
-              width: 100, height: 100, borderRadius: '50%',
-              background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 36, color: 'white', fontWeight: 700, flexShrink: 0
-            }}
-          >
+        <div className="profile-header">
+          <div className="profile-avatar">
             {getInitials(doctor.user?.name)}
           </div>
-          <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: 26, fontWeight: 800 }}>Dr. {doctor.user?.name}</h1>
-            <p style={{ color: '#2563eb', fontWeight: 600, marginBottom: 8 }}>{doctor.specialization}</p>
-            <p style={{ color: '#64748b', marginBottom: 12 }}>{doctor.qualification}</p>
+          <div className="profile-info" style={{ flex: 1 }}>
+            <h1>Dr. {doctor.user?.name}</h1>
+            <p className="specialization">{doctor.specialization}</p>
+            <p className="qualification">{doctor.qualification}</p>
             <div className="flex gap-3" style={{ flexWrap: 'wrap' }}>
               <span className="badge badge-info">⭐ {doctor.rating || 0} Rating</span>
               <span className="badge badge-success">💼 {doctor.experience} Years Exp.</span>
               <span className="badge badge-warning">💲{doctor.consultationFee} / visit</span>
             </div>
           </div>
-          <button className="btn btn-primary btn-lg" onClick={handleBook}>
+          <button className="btn btn-primary btn-lg" onClick={handleBook} style={{ borderRadius: 50 }}>
             📅 Book Appointment
           </button>
         </div>
@@ -71,28 +64,38 @@ const DoctorProfile = () => {
 
       <div className="grid-2">
         <div className="card">
-          <h3 style={{ fontWeight: 700, marginBottom: 16 }}>About</h3>
-          <p style={{ color: '#64748b', lineHeight: 1.7 }}>
+          <h3 style={{ fontWeight: 700, marginBottom: 16, color: 'var(--primary-dark)' }}>About</h3>
+          <p style={{ color: 'var(--gray-500)', lineHeight: 1.7, fontSize: 14 }}>
             {doctor.bio || 'No bio provided yet.'}
           </p>
-          {doctor.hospital && <p style={{ marginTop: 12 }}><strong>Hospital:</strong> {doctor.hospital}</p>}
-          {doctor.address && <p style={{ marginTop: 8 }}><strong>Address:</strong> {doctor.address}</p>}
+          {doctor.hospital && (
+            <p style={{ marginTop: 14, fontSize: 14 }}>
+              <strong style={{ color: 'var(--gray-700)' }}>Hospital:</strong>{' '}
+              <span style={{ color: 'var(--gray-500)' }}>{doctor.hospital}</span>
+            </p>
+          )}
+          {doctor.address && (
+            <p style={{ marginTop: 8, fontSize: 14 }}>
+              <strong style={{ color: 'var(--gray-700)' }}>Address:</strong>{' '}
+              <span style={{ color: 'var(--gray-500)' }}>{doctor.address}</span>
+            </p>
+          )}
         </div>
 
         <div className="card">
-          <h3 style={{ fontWeight: 700, marginBottom: 16 }}>Availability</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: 16, color: 'var(--primary-dark)' }}>Availability</h3>
           {doctor.availability?.length > 0 ? (
             doctor.availability.map((slot, i) => (
               <div key={i} style={{
                 display: 'flex', justifyContent: 'space-between', padding: '10px 0',
-                borderBottom: '1px solid #e2e8f0'
+                borderBottom: '1px solid var(--gray-100)'
               }}>
-                <span style={{ fontWeight: 600 }}>{slot.day}</span>
-                <span style={{ color: '#64748b' }}>{slot.startTime} – {slot.endTime}</span>
+                <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--dark)' }}>{slot.day}</span>
+                <span style={{ color: 'var(--gray-500)', fontSize: 14 }}>{slot.startTime} – {slot.endTime}</span>
               </div>
             ))
           ) : (
-            <p style={{ color: '#64748b' }}>No availability set yet.</p>
+            <p style={{ color: 'var(--gray-500)', fontSize: 14 }}>No availability set yet.</p>
           )}
         </div>
       </div>

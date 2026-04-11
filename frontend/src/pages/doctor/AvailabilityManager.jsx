@@ -56,7 +56,7 @@ const AvailabilityManager = () => {
           <div key={idx} style={{
             display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 80px 40px',
             gap: 12, alignItems: 'end', padding: '16px 0',
-            borderBottom: '1px solid #e2e8f0'
+            borderBottom: '1px solid var(--gray-100)'
           }}>
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">Day</label>

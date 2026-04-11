@@ -32,7 +32,7 @@ const ManageUsers = () => {
         <p>{users.length} users registered</p>
       </div>
 
-      <div className="card">
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div className="table-wrapper">
           <table>
             <thead>
@@ -49,11 +49,11 @@ const ManageUsers = () => {
             <tbody>
               {users.map(user => (
                 <tr key={user._id}>
-                  <td style={{ fontWeight: 600 }}>{user.name}</td>
+                  <td style={{ fontWeight: 600, color: 'var(--dark)' }}>{user.name}</td>
                   <td>{user.email}</td>
                   <td><span className={`badge badge-${user.role === 'doctor' ? 'info' : 'gray'}`}>{user.role}</span></td>
                   <td>{user.phone || '—'}</td>
-                  <td>{format(new Date(user.createdAt), 'MMM dd, yyyy')}</td>
+                  <td style={{ fontSize: 13 }}>{format(new Date(user.createdAt), 'MMM dd, yyyy')}</td>
                   <td>
                     <span className={`badge badge-${user.isActive ? 'success' : 'danger'}`}>
                       {user.isActive ? 'Active' : 'Inactive'}

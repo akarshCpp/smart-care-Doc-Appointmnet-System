@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
-import { useAuth } from '../../context/AuthContext';
+
 
 const DoctorProfileEdit = () => {
-  const { user } = useAuth();
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
@@ -56,7 +56,7 @@ const DoctorProfileEdit = () => {
 
       <div className="card">
         <form onSubmit={handleSubmit}>
-          <h3 style={{ fontWeight: 700, marginBottom: 16 }}>Personal Information</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: 16, color: 'var(--primary-dark)' }}>Personal Information</h3>
           <div className="grid-2">
             <div className="form-group">
               <label className="form-label">Full Name</label>
@@ -68,8 +68,8 @@ const DoctorProfileEdit = () => {
             </div>
           </div>
 
-          <hr style={{ margin: '20px 0', borderColor: '#e2e8f0' }} />
-          <h3 style={{ fontWeight: 700, marginBottom: 16 }}>Professional Information</h3>
+          <div style={{ height: 1, background: 'var(--gray-200)', margin: '8px 0 24px' }} />
+          <h3 style={{ fontWeight: 700, marginBottom: 16, color: 'var(--primary-dark)' }}>Professional Information</h3>
           <div className="grid-2">
             <div className="form-group">
               <label className="form-label">Specialization</label>
