@@ -83,19 +83,8 @@ const BookAppointment = () => {
                 <button
                   key={i}
                   type="button"
+                  className={`time-slot-btn${form.timeSlot?.startTime === slot.startTime ? ' selected' : ''}`}
                   onClick={() => setForm({ ...form, timeSlot: slot })}
-                  style={{
-                    padding: '10px',
-                    border: '2px solid',
-                    borderColor: form.timeSlot?.startTime === slot.startTime ? '#2563eb' : '#e2e8f0',
-                    borderRadius: 8,
-                    background: form.timeSlot?.startTime === slot.startTime ? '#dbeafe' : 'white',
-                    color: form.timeSlot?.startTime === slot.startTime ? '#1d4ed8' : '#64748b',
-                    cursor: 'pointer',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    transition: 'all 0.15s',
-                  }}
                 >
                   {slot.startTime}
                 </button>

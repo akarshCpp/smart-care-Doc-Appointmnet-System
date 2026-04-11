@@ -5,49 +5,103 @@ import Navbar from '../components/layout/Navbar';
 const features = [
   { icon: '🔍', title: 'Find Specialists', desc: 'Search and filter doctors by specialization, rating, and availability.' },
   { icon: '📅', title: 'Easy Booking', desc: 'Book appointments with just a few clicks. Choose your preferred time slot.' },
-  { icon: '🔒', title: 'Secure & Private', desc: 'Your health data is protected with industry-grade security.' },
+  { icon: '🔒', title: 'Secure & Private', desc: 'Your health data is protected with industry-grade security measures.' },
   { icon: '📱', title: '24/7 Access', desc: 'Manage your appointments anytime, anywhere from any device.' },
+];
+
+const stats = [
+  { value: '20+', label: 'Years of Experience' },
+  { value: '95%', label: 'Patient Satisfaction' },
+  { value: '5,000+', label: 'Patients Served' },
+  { value: '10+', label: 'Healthcare Providers' },
 ];
 
 const Home = () => (
   <>
     <Navbar />
+
+    {/* Hero Section */}
     <section className="hero">
-      <div style={{ maxWidth: 700, margin: '0 auto' }}>
-        <h1>Your Health, Our Priority</h1>
-        <p>Connect with top doctors and specialists. Book appointments seamlessly and manage your healthcare journey with Smart Care.</p>
+      <div className="hero-content">
+        <h1>Compassionate care, exceptional results.</h1>
+        <p>
+          Our team of experienced doctors and healthcare professionals are committed
+          to providing quality care and personalized attention to our patients.
+        </p>
         <div className="flex-center gap-3" style={{ flexWrap: 'wrap' }}>
-          <Link to="/doctors" className="btn btn-lg" style={{ background: 'white', color: '#2563eb' }}>
+          <Link
+            to="/doctors"
+            className="btn btn-lg"
+            style={{
+              background: 'white',
+              color: 'var(--primary-dark)',
+              fontWeight: 700,
+              borderRadius: 50,
+            }}
+          >
             🔍 Find Doctors
           </Link>
-          <Link to="/register" className="btn btn-lg btn-outline" style={{ borderColor: 'white', color: 'white' }}>
+          <Link
+            to="/register"
+            className="btn btn-lg"
+            style={{
+              background: 'transparent',
+              color: 'white',
+              border: '2px solid rgba(255,255,255,0.4)',
+              borderRadius: 50,
+            }}
+          >
             Get Started Free
           </Link>
         </div>
       </div>
-    </section>
 
-    <section style={{ padding: '80px 24px', maxWidth: 1200, margin: '0 auto' }}>
-      <h2 style={{ textAlign: 'center', fontSize: 32, fontWeight: 800, marginBottom: 12 }}>Why Smart Care?</h2>
-      <p style={{ textAlign: 'center', color: '#64748b', marginBottom: 48 }}>Everything you need for seamless healthcare management</p>
-      <div className="grid-4">
-        {features.map((f, i) => (
-          <div key={i} className="card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>{f.icon}</div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>{f.title}</h3>
-            <p style={{ color: '#64748b', fontSize: 14 }}>{f.desc}</p>
+      {/* Stats Bar */}
+      <div className="hero-stats">
+        {stats.map((s, i) => (
+          <div key={i} className="hero-stat">
+            <div className="hero-stat-value">{s.value}</div>
+            <div className="hero-stat-label">{s.label}</div>
           </div>
         ))}
       </div>
     </section>
 
-    <section style={{ background: '#f1f5f9', padding: '60px 24px', textAlign: 'center' }}>
-      <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 12 }}>Ready to get started?</h2>
-      <p style={{ color: '#64748b', marginBottom: 28 }}>Join thousands of patients who trust Smart Care for their healthcare needs.</p>
-      <Link to="/register" className="btn btn-primary btn-lg">Create Free Account</Link>
+    {/* Features Section */}
+    <section className="features-section">
+      <h2 className="section-title">Why Smart Care?</h2>
+      <p className="section-subtitle">Everything you need for seamless healthcare management</p>
+      <div className="grid-4">
+        {features.map((f, i) => (
+          <div key={i} className="feature-card">
+            <div className="feature-icon">{f.icon}</div>
+            <h3>{f.title}</h3>
+            <p>{f.desc}</p>
+          </div>
+        ))}
+      </div>
     </section>
 
-    <footer style={{ background: '#1e293b', color: 'rgba(255,255,255,0.7)', textAlign: 'center', padding: '24px' }}>
+    {/* CTA Section */}
+    <section className="cta-section">
+      <h2>Ready to get started?</h2>
+      <p>Join thousands of patients who trust Smart Care for their healthcare needs.</p>
+      <Link
+        to="/register"
+        className="btn btn-lg"
+        style={{
+          background: 'white',
+          color: 'var(--primary-dark)',
+          fontWeight: 700,
+          borderRadius: 50,
+        }}
+      >
+        Create Free Account
+      </Link>
+    </section>
+
+    {/* Footer */}
+    <footer className="site-footer">
       <p>© 2024 Smart Care. All rights reserved.</p>
     </footer>
   </>

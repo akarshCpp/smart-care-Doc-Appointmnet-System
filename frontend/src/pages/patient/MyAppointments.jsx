@@ -67,18 +67,18 @@ const MyAppointments = () => {
           <div key={apt._id} className={`appointment-card ${apt.status}`}>
             <div style={{ flex: 1 }}>
               <div className="flex gap-3" style={{ marginBottom: 6, alignItems: 'center' }}>
-                <h3 style={{ fontWeight: 700 }}>
+                <h3 style={{ fontWeight: 700, color: 'var(--dark)' }}>
                   Dr. {apt.doctor?.user?.name || 'Doctor'}
                 </h3>
                 <span className={`badge badge-${statusColors[apt.status]}`}>{apt.status}</span>
               </div>
-              <p className="text-sm text-gray" style={{ marginBottom: 4 }}>
+              <p className="text-sm" style={{ color: 'var(--gray-500)', marginBottom: 4 }}>
                 🏥 {apt.doctor?.specialization}
               </p>
-              <p className="text-sm" style={{ marginBottom: 4 }}>
+              <p className="text-sm" style={{ marginBottom: 4, color: 'var(--gray-700)' }}>
                 📅 {format(new Date(apt.date), 'MMMM dd, yyyy')} at {apt.timeSlot?.startTime}
               </p>
-              <p className="text-sm text-gray">📝 {apt.reason}</p>
+              <p className="text-sm" style={{ color: 'var(--gray-500)' }}>📝 {apt.reason}</p>
             </div>
             {['pending', 'approved'].includes(apt.status) && (
               <button

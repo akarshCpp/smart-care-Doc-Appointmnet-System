@@ -31,6 +31,14 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo">
+          <div style={{
+            width: 48, height: 48,
+            background: 'var(--primary)',
+            borderRadius: 10,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', fontSize: 24, fontWeight: 800,
+            margin: '0 auto 14px',
+          }}>+</div>
           <h1>Smart Care</h1>
           <p>Sign in to your account</p>
         </div>
@@ -38,7 +46,7 @@ const Login = () => {
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group" style={{ textAlign: 'left' }}>
             <label className="form-label">Email Address</label>
             <input
               type="email"
@@ -50,7 +58,7 @@ const Login = () => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="form-group" style={{ textAlign: 'left' }}>
             <label className="form-label">Password</label>
             <input
               type="password"

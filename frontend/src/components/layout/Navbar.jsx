@@ -15,6 +15,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-inner">
         <Link to="/" className="navbar-brand">
+          <span className="navbar-brand-icon">+</span>
           Smart Care
         </Link>
 
@@ -25,7 +26,9 @@ const Navbar = () => {
             <>
               <li><NavLink to="/login" className="nav-link">Login</NavLink></li>
               <li>
-                <NavLink to="/register" className="btn btn-primary btn-sm">Get Started</NavLink>
+                <NavLink to="/register" className="btn btn-primary btn-sm" style={{ borderRadius: 50 }}>
+                  Get Started
+                </NavLink>
               </li>
             </>
           ) : (
@@ -46,12 +49,21 @@ const Navbar = () => {
                 <li><NavLink to="/admin/dashboard" className="nav-link">Admin Panel</NavLink></li>
               )}
               <li>
-                <span style={{ padding: '8px 14px', fontSize: 14, color: '#64748b' }}>
+                <span style={{
+                  padding: '6px 14px',
+                  fontSize: 13,
+                  color: 'var(--gray-500)',
+                  fontWeight: 600,
+                  background: 'var(--gray-100)',
+                  borderRadius: 50,
+                }}>
                   {user.name.split(' ')[0]}
                 </span>
               </li>
               <li>
-                <button onClick={handleLogout} className="btn btn-ghost btn-sm">Logout</button>
+                <button onClick={handleLogout} className="btn btn-ghost btn-sm" style={{ borderRadius: 50 }}>
+                  Logout
+                </button>
               </li>
             </>
           )}

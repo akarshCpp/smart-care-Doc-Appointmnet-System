@@ -35,7 +35,7 @@ const AdminAppointments = () => {
         </select>
       </div>
 
-      <div className="card">
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div className="table-wrapper">
           <table>
             <thead>
@@ -52,19 +52,19 @@ const AdminAppointments = () => {
               {filtered.map(apt => (
                 <tr key={apt._id}>
                   <td>
-                    <p style={{ fontWeight: 600 }}>{apt.patient?.name}</p>
-                    <p style={{ fontSize: 12, color: '#64748b' }}>{apt.patient?.email}</p>
+                    <p style={{ fontWeight: 600, color: 'var(--dark)' }}>{apt.patient?.name}</p>
+                    <p style={{ fontSize: 12, color: 'var(--gray-500)' }}>{apt.patient?.email}</p>
                   </td>
                   <td>
-                    <p style={{ fontWeight: 600 }}>Dr. {apt.doctor?.user?.name}</p>
-                    <p style={{ fontSize: 12, color: '#64748b' }}>{apt.doctor?.specialization}</p>
+                    <p style={{ fontWeight: 600, color: 'var(--dark)' }}>Dr. {apt.doctor?.user?.name}</p>
+                    <p style={{ fontSize: 12, color: 'var(--gray-500)' }}>{apt.doctor?.specialization}</p>
                   </td>
                   <td>
-                    <p>{format(new Date(apt.date), 'MMM dd, yyyy')}</p>
-                    <p style={{ fontSize: 12, color: '#64748b' }}>{apt.timeSlot?.startTime} – {apt.timeSlot?.endTime}</p>
+                    <p style={{ fontSize: 14, color: 'var(--gray-700)' }}>{format(new Date(apt.date), 'MMM dd, yyyy')}</p>
+                    <p style={{ fontSize: 12, color: 'var(--gray-500)' }}>{apt.timeSlot?.startTime} – {apt.timeSlot?.endTime}</p>
                   </td>
                   <td style={{ maxWidth: 200 }}>
-                    <p style={{ fontSize: 13, color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <p style={{ fontSize: 13, color: 'var(--gray-500)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {apt.reason}
                     </p>
                   </td>
@@ -75,7 +75,7 @@ const AdminAppointments = () => {
                       apt.status === 'cancelled' || apt.status === 'rejected' ? 'danger' : 'info'
                     }`}>{apt.status}</span>
                   </td>
-                  <td style={{ color: '#64748b', fontSize: 13 }}>
+                  <td style={{ color: 'var(--gray-500)', fontSize: 13 }}>
                     {format(new Date(apt.createdAt), 'MMM dd, yyyy')}
                   </td>
                 </tr>
@@ -83,7 +83,7 @@ const AdminAppointments = () => {
             </tbody>
           </table>
           {filtered.length === 0 && (
-            <p style={{ textAlign: 'center', padding: 40, color: '#64748b' }}>No appointments found</p>
+            <p style={{ textAlign: 'center', padding: 40, color: 'var(--gray-500)', fontSize: 14 }}>No appointments found</p>
           )}
         </div>
       </div>

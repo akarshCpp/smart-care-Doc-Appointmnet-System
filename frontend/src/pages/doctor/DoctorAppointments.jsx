@@ -51,18 +51,18 @@ const DoctorAppointments = () => {
           <div key={apt._id} className={`appointment-card ${apt.status}`}>
             <div style={{ flex: 1 }}>
               <div className="flex gap-3" style={{ marginBottom: 6, alignItems: 'center' }}>
-                <h3 style={{ fontWeight: 700 }}>{apt.patient?.name}</h3>
+                <h3 style={{ fontWeight: 700, color: 'var(--dark)' }}>{apt.patient?.name}</h3>
                 <span className={`badge badge-${
                   apt.status === 'approved' ? 'success' :
                   apt.status === 'pending' ? 'warning' :
                   apt.status === 'cancelled' ? 'danger' : 'gray'
                 }`}>{apt.status}</span>
               </div>
-              <p className="text-sm" style={{ marginBottom: 4 }}>
+              <p className="text-sm" style={{ marginBottom: 4, color: 'var(--gray-700)' }}>
                 📅 {format(new Date(apt.date), 'MMMM dd, yyyy')} at {apt.timeSlot?.startTime} – {apt.timeSlot?.endTime}
               </p>
-              <p className="text-sm text-gray">📧 {apt.patient?.email} | 📱 {apt.patient?.phone || 'N/A'}</p>
-              <p className="text-sm" style={{ marginTop: 6 }}>📝 <em>{apt.reason}</em></p>
+              <p className="text-sm" style={{ color: 'var(--gray-500)' }}>📧 {apt.patient?.email} | 📱 {apt.patient?.phone || 'N/A'}</p>
+              <p className="text-sm" style={{ marginTop: 6, color: 'var(--gray-700)' }}>📝 <em>{apt.reason}</em></p>
             </div>
             {apt.status === 'pending' && (
               <div className="flex gap-2">

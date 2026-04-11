@@ -25,7 +25,7 @@ const AdminDashboard = () => {
         <p>Smart Care system overview</p>
       </div>
 
-      <div className="grid-4" style={{ marginBottom: 32 }}>
+      <div className="grid-4" style={{ marginBottom: 28 }}>
         <div className="stat-card">
           <div className="stat-icon blue">👥</div>
           <div><div className="stat-label">Total Patients</div><div className="stat-value">{stats.totalUsers}</div></div>
@@ -46,18 +46,21 @@ const AdminDashboard = () => {
 
       <div className="grid-2">
         <div className="card">
-          <h3 style={{ fontWeight: 700, marginBottom: 20 }}>Appointments by Status</h3>
+          <h3 style={{ fontWeight: 700, marginBottom: 20, color: 'var(--primary-dark)' }}>Appointments by Status</h3>
           {['pending', 'approved', 'completed', 'cancelled', 'rejected'].map(status => (
-            <div key={status} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #e2e8f0' }}>
-              <span style={{ textTransform: 'capitalize' }}>{status}</span>
-              <span style={{ fontWeight: 700 }}>{statusMap[status] || 0}</span>
+            <div key={status} style={{
+              display: 'flex', justifyContent: 'space-between',
+              padding: '10px 0', borderBottom: '1px solid var(--gray-100)'
+            }}>
+              <span style={{ textTransform: 'capitalize', color: 'var(--gray-700)', fontSize: 14 }}>{status}</span>
+              <span style={{ fontWeight: 700, color: 'var(--primary-dark)' }}>{statusMap[status] || 0}</span>
             </div>
           ))}
         </div>
 
         <div className="card">
-          <h3 style={{ fontWeight: 700, marginBottom: 20 }}>Quick Actions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <h3 style={{ fontWeight: 700, marginBottom: 20, color: 'var(--primary-dark)' }}>Quick Actions</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <Link to="/admin/doctors" className="btn btn-primary btn-block">
               👨‍⚕️ Manage Doctors ({stats.pendingDoctors} pending)
             </Link>
