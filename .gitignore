@@ -1,0 +1,27 @@
+# Dependencies
+/node_modules
+/frontend/node_modules
+
+# Build artifacts
+/frontend/dist
+/frontend/build
+
+# Environment variables
+.env
+backend/.env
+frontend/.env
+
+# Logs
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
