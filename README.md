@@ -1,6 +1,16 @@
-# 🏥 Smart Care - Doctor Appointment System
 
-A full-stack MERN application for managing doctor appointments with role-based access control.
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/88904952/214833523-e7c539c8-4d0f-4893-9c1f-7a82b0339592.gif" alt="logo" width="200"/>
+  <h1>Smart Care - Doctor Appointment System</h1>
+  <p>A full-stack MERN application for managing doctor appointments with role-based access control for Patients, Doctors, and Admins.</p>
+  
+  <p>
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React"/>
+    <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js"/>
+    <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js"/>
+    <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB"/>
+  </p>
+</div>
 
 ## 🚀 Tech Stack
 
